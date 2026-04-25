@@ -22,8 +22,20 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UniversityController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/storage/team/{filename}', function (string $filename) {
+    $filename = basename($filename);
+    $path = 'team/' . $filename;
+
+    if (!Storage::disk('public')->exists($path)) {
+        abort(404);
+    }
+
+    return response()->file(Storage::disk('public')->path($path));
+})->where('filename', '[^/]+');
 
 Route::get('/career', [HomeController::class, 'career'])->name('career');
 
