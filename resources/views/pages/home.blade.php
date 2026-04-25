@@ -324,7 +324,7 @@
                             <article class="member-card">
                                 <div class="member-card-photo {{ $index == 1 ? 'photo-2' : '' }}{{ $index == 2 ? 'photo-3' : '' }}{{ $index == 3 ? 'photo-4' : '' }}" aria-hidden="true">
                                     @if ($member->photo)
-                                        <img src="{{ $member->photo ? asset('images/team/' . $member->photo) : asset('images/' . $member->photo) }}" alt="{{ $member->name }}" loading="lazy">
+                                        <img src="{{ asset('storage/team/' . $member->photo) }}" alt="{{ $member->name }}" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-300 flex items-center justify-center">
                                             <span class="text-gray-600">{{ substr($member->name, 0, 2) }}</span>
@@ -346,7 +346,7 @@
                             <article class="member-card">
                                 <div class="member-card-photo photo-{{ $index + 5 }}" aria-hidden="true">
                                     @if ($member->photo)
-                                        <img src="{{ $member->photo ? asset('images/team/' . $member->photo) : asset('images/' . $member->photo) }}" alt="{{ $member->name }}" loading="lazy">
+                                        <img src="{{ asset('storage/team/' . $member->photo) }}" alt="{{ $member->name }}" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-300 flex items-center justify-center">
                                             <span class="text-gray-600">{{ substr($member->name, 0, 2) }}</span>
@@ -371,7 +371,7 @@
                             <article class="member-card mobile-card" data-slide="{{ $index }}">
                                 <div class="member-card-photo {{ $index == 1 ? 'photo-2' : '' }}{{ $index == 2 ? 'photo-3' : '' }}{{ $index == 3 ? 'photo-4' : '' }}{{ $index >= 4 ? 'photo-' . ($index + 1) : '' }}" aria-hidden="true">
                                     @if ($member->photo)
-                                        <img src="{{ $member->photo ? asset('images/team/' . $member->photo) : asset('images/' . $member->photo) }}" alt="{{ $member->name }}" loading="lazy">
+                                        <img src="{{ asset('storage/team/' . $member->photo) }}" alt="{{ $member->name }}" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-300 flex items-center justify-center">
                                             <span class="text-gray-600">{{ substr($member->name, 0, 2) }}</span>

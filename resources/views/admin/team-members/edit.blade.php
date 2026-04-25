@@ -66,7 +66,7 @@
                     @if ($teamMember->photo)
                         <div class="mt-3">
                             <p class="text-xs text-gray-600 mb-2">Current photo:</p>
-                            <img src="{{ asset('images/team/' . $teamMember->photo) }}" alt="{{ $teamMember->name }}" class="w-20 h-20 rounded-full object-cover border border-gray-200">
+                            <img src="{{ asset('storage/team/' . $teamMember->photo) }}" alt="{{ $teamMember->name }}" class="w-20 h-20 rounded-full object-cover border border-gray-200">
                         </div>
                     @endif
                 </div>

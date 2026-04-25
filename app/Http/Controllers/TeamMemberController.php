@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TeamMember;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class TeamMemberController extends Controller
 {
@@ -43,10 +43,7 @@ class TeamMemberController extends Controller
             $photo = $request->file('photo');
             $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
 
-            $destinationPath = public_path('images/team');
-            File::ensureDirectoryExists($destinationPath);
-
-            $photo->move($destinationPath, $photoName);
+            Storage::disk('public')->putFileAs('team', $photo, $photoName);
             $validated['photo'] = $photoName;
         }
 
@@ -90,17 +87,14 @@ class TeamMemberController extends Controller
 
         if ($request->hasFile('photo')) {
             // Delete old photo
-            if ($teamMember->photo && file_exists(public_path('images/team/' . $teamMember->photo))) {
-                unlink(public_path('images/team/' . $teamMember->photo));
+            if ($teamMember->photo) {
+                Storage::disk('public')->delete('team/' . $teamMember->photo);
             }
 
             $photo = $request->file('photo');
             $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
 
-            $destinationPath = public_path('images/team');
-            File::ensureDirectoryExists($destinationPath);
-
-            $photo->move($destinationPath, $photoName);
+            Storage::disk('public')->putFileAs('team', $photo, $photoName);
             $validated['photo'] = $photoName;
         }
 
@@ -119,8 +113,8 @@ class TeamMemberController extends Controller
     public function destroy(TeamMember $teamMember)
     {
         // Delete photo
-        if ($teamMember->photo && file_exists(public_path('images/team/' . $teamMember->photo))) {
-            unlink(public_path('images/team/' . $teamMember->photo));
+        if ($teamMember->photo) {
+            Storage::disk('public')->delete('team/' . $teamMember->photo);
         }
 
         $teamMember->delete();
