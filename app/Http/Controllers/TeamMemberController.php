@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TeamMember;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class TeamMemberController extends Controller
 {
@@ -41,7 +42,11 @@ class TeamMemberController extends Controller
         if ($request->hasFile('photo')) {
             $photo = $request->file('photo');
             $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
-            $photo->move(public_path('images/team'), $photoName);
+
+            $destinationPath = public_path('images/team');
+            File::ensureDirectoryExists($destinationPath);
+
+            $photo->move($destinationPath, $photoName);
             $validated['photo'] = $photoName;
         }
 
@@ -91,7 +96,11 @@ class TeamMemberController extends Controller
 
             $photo = $request->file('photo');
             $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
-            $photo->move(public_path('images/team'), $photoName);
+
+            $destinationPath = public_path('images/team');
+            File::ensureDirectoryExists($destinationPath);
+
+            $photo->move($destinationPath, $photoName);
             $validated['photo'] = $photoName;
         }
 
