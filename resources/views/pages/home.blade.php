@@ -323,7 +323,7 @@
                         @forelse (isset($teamMembers) ? $teamMembers->take(4) : collect([]) as $index => $member)
                             <article class="member-card">
                                 <div class="member-card-photo {{ $index == 1 ? 'photo-2' : '' }}{{ $index == 2 ? 'photo-3' : '' }}{{ $index == 3 ? 'photo-4' : '' }}" aria-hidden="true">
-                                    @if ($member->photo)
+                                    @if ($member->photo_url)
                                         <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-300 flex items-center justify-center">
@@ -345,7 +345,7 @@
                         @forelse (isset($teamMembers) ? $teamMembers->skip(4)->take(3) : collect([]) as $index => $member)
                             <article class="member-card">
                                 <div class="member-card-photo photo-{{ $index + 5 }}" aria-hidden="true">
-                                    @if ($member->photo)
+                                    @if ($member->photo_url)
                                         <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-300 flex items-center justify-center">
@@ -370,7 +370,7 @@
                         @forelse (isset($teamMembers) ? $teamMembers->take(7) : collect([]) as $index => $member)
                             <article class="member-card mobile-card" data-slide="{{ $index }}">
                                 <div class="member-card-photo {{ $index == 1 ? 'photo-2' : '' }}{{ $index == 2 ? 'photo-3' : '' }}{{ $index == 3 ? 'photo-4' : '' }}{{ $index >= 4 ? 'photo-' . ($index + 1) : '' }}" aria-hidden="true">
-                                    @if ($member->photo)
+                                    @if ($member->photo_url)
                                         <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" loading="lazy">
                                     @else
                                         <div class="w-full h-full bg-gray-300 flex items-center justify-center">

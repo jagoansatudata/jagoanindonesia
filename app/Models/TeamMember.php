@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class TeamMember extends Model
@@ -30,6 +31,10 @@ class TeamMember extends Model
             return asset('storage/team/' . $this->photo);
         }
 
-        return asset('images/team/' . $this->photo);
+        if (File::exists(public_path('images/team/' . $this->photo))) {
+            return asset('images/team/' . $this->photo);
+        }
+
+        return null;
     }
 }

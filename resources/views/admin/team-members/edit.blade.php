@@ -63,7 +63,7 @@
                            class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500">
                     <p class="mt-1 text-xs text-gray-500">JPEG, PNG, JPG, GIF (Max 2MB). Leave empty to keep current photo.</p>
                     
-                    @if ($teamMember->photo)
+                    @if ($teamMember->photo_url)
                         <div class="mt-3">
                             <p class="text-xs text-gray-600 mb-2">Current photo:</p>
                             <img src="{{ $teamMember->photo_url }}" alt="{{ $teamMember->name }}" class="w-20 h-20 rounded-full object-cover border border-gray-200">

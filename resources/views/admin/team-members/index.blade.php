@@ -36,7 +36,7 @@
                     @forelse ($teamMembers as $teamMember)
                         <tr>
                             <td class="px-6 py-4">
-                                @if ($teamMember->photo)
+                                @if ($teamMember->photo_url)
                                     <img src="{{ $teamMember->photo_url }}" alt="{{ $teamMember->name }}" class="w-12 h-12 rounded-full object-cover">
                                 @else
                                     <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
