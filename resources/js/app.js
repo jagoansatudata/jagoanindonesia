@@ -81,3 +81,56 @@ if (teamSliderContainer && slideIndicators) {
     // Update on resize
     window.addEventListener('resize', updateActiveIndicator, { passive: true });
 }
+
+// University Slider Functionality
+const universitySliderContainer = document.getElementById('universitySliderContainer');
+const universitySlideIndicators = document.getElementById('universitySlideIndicators');
+
+if (universitySliderContainer && universitySlideIndicators) {
+    const indicators = universitySlideIndicators.querySelectorAll('.slide-indicator');
+    const cards = universitySliderContainer.querySelectorAll('.career-univ-logo');
+
+    const updateActiveIndicator = () => {
+        const containerRect = universitySliderContainer.getBoundingClientRect();
+        const containerCenter = containerRect.left + containerRect.width / 2;
+
+        let activeIndex = 0;
+        let minDistance = Infinity;
+
+        cards.forEach((card, index) => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const distance = Math.abs(containerCenter - cardCenter);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                activeIndex = index;
+            }
+        });
+
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === activeIndex);
+        });
+    };
+
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            const targetCard = cards[index];
+            if (targetCard) {
+                const cardRect = targetCard.getBoundingClientRect();
+                const containerRect = universitySliderContainer.getBoundingClientRect();
+                const scrollLeft = universitySliderContainer.scrollLeft;
+                const cardLeft = cardRect.left - containerRect.left;
+
+                universitySliderContainer.scrollTo({
+                    left: scrollLeft + cardLeft - (containerRect.width - cardRect.width) / 2,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    universitySliderContainer.addEventListener('scroll', updateActiveIndicator, { passive: true });
+    updateActiveIndicator();
+    window.addEventListener('resize', updateActiveIndicator, { passive: true });
+}

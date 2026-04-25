@@ -686,6 +686,40 @@ body {
     justify-content: center !important;
 }
 
+.activities-marquee {
+    position: relative !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    padding-bottom: 3rem !important;
+}
+
+.activities-marquee-track {
+    display: flex !important;
+    gap: 2rem !important;
+    width: max-content !important;
+    will-change: transform !important;
+    animation: activitiesMarquee 30s linear infinite !important;
+}
+
+.activities-marquee:hover .activities-marquee-track {
+    animation-play-state: paused !important;
+}
+
+@keyframes activitiesMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - 1rem));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .activities-marquee-track {
+        animation: none !important;
+    }
+}
+
 .activity-card {
     position: relative !important;
     background: white !important;
@@ -714,6 +748,27 @@ body {
 }
 
 .activity-card:nth-child(even):hover {
+    transform: translateY(16px) !important;
+}
+
+.activities-marquee .activity-card {
+    flex: 0 0 auto !important;
+    margin-top: 2rem !important;
+}
+
+.activities-marquee .activity-card:nth-child(odd) {
+    transform: translateY(-20px) !important;
+}
+
+.activities-marquee .activity-card:nth-child(even) {
+    transform: translateY(20px) !important;
+}
+
+.activities-marquee .activity-card:hover {
+    transform: translateY(-24px) !important;
+}
+
+.activities-marquee .activity-card:nth-child(even):hover {
     transform: translateY(16px) !important;
 }
 
@@ -803,33 +858,35 @@ body {
         display: none !important;
     }
     
-    .activities-grid {
-        display: flex !important;
-        grid-template-columns: unset !important;
-        gap: 1rem !important;
+    .activities-marquee {
         overflow-x: auto !important;
-        scroll-snap-type: x mandatory !important;
         -webkit-overflow-scrolling: touch !important;
         padding: 1rem 0 !important;
         margin: 0 -1rem !important;
-        justify-content: flex-start !important;
     }
     
-    .activities-grid::-webkit-scrollbar {
+    .activities-marquee-track {
+        animation: none !important;
+        gap: 1rem !important;
+        scroll-snap-type: x mandatory !important;
+        padding: 0 1rem !important;
+    }
+    
+    .activities-marquee::-webkit-scrollbar {
         height: 6px !important;
     }
     
-    .activities-grid::-webkit-scrollbar-track {
+    .activities-marquee::-webkit-scrollbar-track {
         background: #F3F4F6 !important;
         border-radius: 3px !important;
     }
     
-    .activities-grid::-webkit-scrollbar-thumb {
+    .activities-marquee::-webkit-scrollbar-thumb {
         background: #D1D5DB !important;
         border-radius: 3px !important;
     }
     
-    .activities-grid::-webkit-scrollbar-thumb:hover {
+    .activities-marquee::-webkit-scrollbar-thumb:hover {
         background: #9CA3AF !important;
     }
     
@@ -1010,6 +1067,10 @@ body {
 .mobile-card {
     flex: 0 0 280px;
     scroll-snap-align: start;
+}
+
+.slide-indicators {
+    display: none;
 }
 
 /* Responsive Display Classes */
@@ -1926,8 +1987,27 @@ body {
     }
     
     .career-univ-logos {
-        flex-wrap: wrap !important;
-        gap: 2rem !important;
+        flex-wrap: nowrap !important;
+        gap: 1.25rem !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        scroll-behavior: smooth !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        justify-content: flex-start !important;
+        padding: 0.5rem 1rem !important;
+        margin: 0 -1rem !important;
+    }
+
+    .career-univ-logos::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .career-univ-logo {
+        flex: 0 0 auto !important;
+        scroll-snap-align: center !important;
+        min-width: 180px !important;
     }
     
     .career-univ-logo img {

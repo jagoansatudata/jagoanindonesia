@@ -3,7 +3,7 @@
     <section class="section-hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <span class="hero-tag">OUR BLOG</span>
+                <span class="hero-tag">OUR NEWS</span>
                 <h1 class="hero-heading">Featured insights and articles</h1>
             </div>
         </div>

@@ -11,9 +11,11 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HeroSectionController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientReviewController;
 use App\Http\Controllers\InternExperienceController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -28,6 +30,8 @@ Route::get('/career', [HomeController::class, 'career'])->name('career');
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::post('/news/{slug}/comments', [NewsController::class, 'storeComment'])->name('news.comments.store');
+
+Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
 
 // CKEditor Image Upload Route
 Route::post('/admin/upload-image', function (Illuminate\Http\Request $request) {
@@ -106,6 +110,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('comments/{comment}/toggle', [AdminCommentController::class, 'toggle'])->name('admin.comments.toggle');
     Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('admin.comments.destroy');
     Route::post('comments/batch', [AdminCommentController::class, 'batch'])->name('admin.comments.batch');
+
+    Route::get('messages', [AdminMessageController::class, 'index'])->name('admin.messages.index');
+    Route::get('messages/{message}', [AdminMessageController::class, 'show'])->name('admin.messages.show');
+    Route::patch('messages/{message}/toggle', [AdminMessageController::class, 'toggle'])->name('admin.messages.toggle');
+    Route::delete('messages/{message}', [AdminMessageController::class, 'destroy'])->name('admin.messages.destroy');
+    Route::post('messages/batch', [AdminMessageController::class, 'batch'])->name('admin.messages.batch');
 
     // Analytics Routes
     Route::get('analytics/blogs', [BlogAnalyticsController::class, 'index'])->name('admin.analytics.blogs');

@@ -275,25 +275,35 @@
                     </div>
                 </div>
                 
-                <div class="activities-grid">
-                    @php($activities = App\Models\Activity::query()->where('is_published', true)->orderBy('sort_order')->orderByDesc('created_at')->take(4)->get())
+                <div class="activities-marquee" aria-label="Activities slider">
+                    @php
+                        $activities = App\Models\Activity::query()
+                            ->where('is_published', true)
+                            ->orderBy('sort_order')
+                            ->orderByDesc('created_at')
+                            ->take(4)
+                            ->get();
+                        $duplicated_activities = $activities->concat($activities);
+                    @endphp
 
                     @if($activities->isNotEmpty())
-                        @foreach($activities as $activity)
-                            <article class="activity-card">
-                                <div class="activity-card-image">
-                                    @if($activity->image_path)
-                                        <img src="{{ asset('storage/'.$activity->image_path) }}" alt="{{ $activity->title }}" loading="lazy">
-                                    @else
-                                        <img src="{{ asset('images/img-sms.png') }}" alt="{{ $activity->title }}" loading="lazy">
-                                    @endif
-                                    @if($activity->category)
-                                        <span class="activity-tag">{{ $activity->category }}</span>
-                                    @endif
-                                </div>
-                                <h3 class="activity-card-title">{{ $activity->title }}</h3>
-                            </article>
-                        @endforeach
+                        <div class="activities-marquee-track" aria-hidden="true">
+                            @foreach($duplicated_activities as $activity)
+                                <article class="activity-card">
+                                    <div class="activity-card-image">
+                                        @if($activity->image_path)
+                                            <img src="{{ asset('storage/'.$activity->image_path) }}" alt="{{ $activity->title }}" loading="lazy">
+                                        @else
+                                            <img src="{{ asset('images/img-sms.png') }}" alt="{{ $activity->title }}" loading="lazy">
+                                        @endif
+                                        @if($activity->category)
+                                            <span class="activity-tag">{{ $activity->category }}</span>
+                                        @endif
+                                    </div>
+                                    <h3 class="activity-card-title">{{ $activity->title }}</h3>
+                                </article>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             </div>
@@ -558,7 +568,9 @@
                                         {{ Str::limit($news->title, 60) }}
                                     </h3>
                                     <div class="blog-card-actions" style="display: flex; justify-content: space-between; align-items: center;">
-                                        <button style="display: flex; align-items: center; gap: 8px; background: none; border: 2px solid #E5E7EB; border-radius: 20px; color: #6B7280; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 12px;"
+                                        <button style="display: flex; align-items: center; gap: 8px; background: none; border: 2px solid #E5E7EB; border-radius: 20px; color: #6B7280; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 12px; transition: all 0.2s ease;"
+                                                onmouseover="this.style.background='#F3F4F6'; this.style.borderColor='#9CA3AF'; this.style.color='#374151'; this.querySelector('span').style.background='#9CA3AF';"
+                                                onmouseout="this.style.background='none'; this.style.borderColor='#E5E7EB'; this.style.color='#6B7280'; this.querySelector('span').style.background='#E5E7EB';"
                                                 onclick="event.stopPropagation(); window.location.href='{{ route('news.show', $news->slug) }}'">
                                             <span style="width: 16px; height: 16px; background: #E5E7EB; border-radius: 50%; display: inline-block;"></span>
                                             Continue Reading
@@ -622,7 +634,9 @@
                                         {{ Str::limit($blog->title, 60) }}
                                     </h3>
                                     <div class="blog-card-actions" style="display: flex; justify-content: space-between; align-items: center;">
-                                        <button style="display: flex; align-items: center; gap: 8px; background: none; border: 2px solid #E5E7EB; border-radius: 20px; color: #6B7280; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 12px;"
+                                        <button style="display: flex; align-items: center; gap: 8px; background: none; border: 2px solid #E5E7EB; border-radius: 20px; color: #6B7280; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 12px; transition: all 0.2s ease;"
+                                                onmouseover="this.style.background='#F3F4F6'; this.style.borderColor='#9CA3AF'; this.style.color='#374151'; this.querySelector('span').style.background='#9CA3AF';"
+                                                onmouseout="this.style.background='none'; this.style.borderColor='#E5E7EB'; this.style.color='#6B7280'; this.querySelector('span').style.background='#E5E7EB';"
                                                 onclick="event.stopPropagation(); window.location.href='{{ route('news.show', $blog->slug) }}'">
                                             <span style="width: 16px; height: 16px; background: #E5E7EB; border-radius: 50%; display: inline-block;"></span>
                                             Continue Reading
@@ -722,20 +736,21 @@
 
                     <!-- Right Column -->
                     <div class="contact-right">
-                        <form class="contact-form contact-form--card" aria-label="Form kontak">
+                        <form class="contact-form contact-form--card" method="POST" action="{{ route('messages.store') }}" aria-label="Form kontak">
+                            @csrf
                             <h3 class="contact-form-title">Jangan ragu untuk menghubungi atau mengunjungi kami</h3>
                             <div class="contact-form-fields">
                                 <div class="contact-form-group">
-                                    <input type="text" name="name" class="contact-form-input" placeholder="Nama" />
+                                    <input type="text" name="name" class="contact-form-input" placeholder="Nama" required />
                                 </div>
                                 <div class="contact-form-group">
-                                    <input type="email" name="email" class="contact-form-input" placeholder="Email" />
+                                    <input type="email" name="email" class="contact-form-input" placeholder="Email" required />
                                 </div>
                                 <div class="contact-form-group">
                                     <input type="tel" name="phone" class="contact-form-input" placeholder="No. Telepon" />
                                 </div>
                                 <div class="contact-form-group">
-                                    <textarea name="message" class="contact-form-input contact-form-textarea" placeholder="Tulis pesan Anda"></textarea>
+                                    <textarea name="message" class="contact-form-input contact-form-textarea" placeholder="Tulis pesan Anda" required></textarea>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-dark contact-submit">Kirim</button>

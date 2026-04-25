@@ -107,6 +107,22 @@
                 <span>Comments</span>
             </a>
 
+            <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.messages.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
+                    P
+                    @php
+                        $unreadCount = 0;
+                        if (\Illuminate\Support\Facades\Schema::hasTable('messages')) {
+                            $unreadCount = \App\Models\Message::where('is_read', false)->count();
+                        }
+                    @endphp
+                    @if($unreadCount > 0)
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                    @endif
+                </span>
+                <span>Messages</span>
+            </a>
+
             <a href="{{ route('admin.analytics.blogs') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.analytics.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">N</span>
                 <span>Analytics</span>
@@ -150,6 +166,22 @@
             </div>
 
             <div class="flex items-center gap-3">
+                <a href="{{ route('admin.messages.index') }}" class="relative inline-flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50" aria-label="Messages">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 8H18M6 12H18M6 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20 14V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    @php
+                        $unreadCountTop = 0;
+                        if (\Illuminate\Support\Facades\Schema::hasTable('messages')) {
+                            $unreadCountTop = \App\Models\Message::where('is_read', false)->count();
+                        }
+                    @endphp
+                    @if($unreadCountTop > 0)
+                        <span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCountTop > 99 ? '99+' : $unreadCountTop }}</span>
+                    @endif
+                </a>
+
                 @if(request()->routeIs('admin.faqs.*'))
                     <a href="{{ route('admin.faqs.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-gray-900 text-white px-4 py-2 text-sm font-semibold hover:bg-gray-800">
                         <span class="text-base leading-none">+</span>

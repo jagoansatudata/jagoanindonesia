@@ -10,7 +10,7 @@
                 <h2 class="career-univ-title"><span class="univ-small">In Collaboration</span><br><span class="univ-large">with Universities</span></h2>
                 <p class="career-univ-desc">Menghadirkan solusi inovatif dan berdampak bersama mitra pemerintah, pendidikan, komunitas, dan swasta.</p>
             </div>
-            <div class="career-univ-logos" role="list" aria-label="Logo universitas">
+            <div class="career-univ-logos" id="universitySliderContainer" role="list" aria-label="Logo universitas">
                 @if($universities->count() > 0)
                     @foreach($universities as $university)
                         <div class="career-univ-logo" role="listitem" aria-label="{{ $university->name }} logo">
@@ -41,6 +41,14 @@
                     </div>
                 @endif
             </div>
+
+            @if($universities->count() > 1)
+                <div class="slide-indicators" id="universitySlideIndicators" aria-label="University logo slider indicators">
+                    @foreach($universities as $university)
+                        <button type="button" class="slide-indicator" aria-label="Go to {{ $university->name }}"></button>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
 </section>
