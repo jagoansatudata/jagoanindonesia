@@ -291,8 +291,8 @@
                             @foreach($duplicated_activities as $activity)
                                 <article class="activity-card">
                                     <div class="activity-card-image">
-                                        @if($activity->image_path)
-                                            <img src="{{ asset('storage/'.$activity->image_path) }}" alt="{{ $activity->title }}" loading="lazy">
+                                        @if($activity->image_url)
+                                            <img src="{{ $activity->image_url }}" alt="{{ $activity->title }}" loading="lazy">
                                         @else
                                             <img src="{{ asset('images/img-sms.png') }}" alt="{{ $activity->title }}" loading="lazy">
                                         @endif

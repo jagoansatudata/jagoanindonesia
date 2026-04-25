@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Activity extends Model
 {
@@ -19,4 +20,17 @@ class Activity extends Model
         'is_published' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image_path) {
+            return null;
+        }
+
+        if (!Storage::disk('public')->exists($this->image_path)) {
+            return null;
+        }
+
+        return asset('storage/' . $this->image_path);
+    }
 }

@@ -53,6 +53,11 @@ class ActivityController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('activities', 'public');
+            if (!$imagePath) {
+                return back()->withInput()->withErrors([
+                    'image' => 'Failed to upload image. Please try again.'
+                ]);
+            }
         }
 
         Activity::create([
@@ -104,10 +109,18 @@ class ActivityController extends Controller
         }
 
         if ($request->hasFile('image')) {
+            $newImagePath = $request->file('image')->store('activities', 'public');
+            if (!$newImagePath) {
+                return back()->withInput()->withErrors([
+                    'image' => 'Failed to upload image. Please try again.'
+                ]);
+            }
+
             if ($activity->image_path) {
                 Storage::disk('public')->delete($activity->image_path);
             }
-            $activity->image_path = $request->file('image')->store('activities', 'public');
+
+            $activity->image_path = $newImagePath;
         }
 
         $activity->fill([

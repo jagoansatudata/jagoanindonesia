@@ -51,9 +51,9 @@
                         <div class="mt-1 text-sm text-red-600">{{ $message }}</div>
                     @enderror
 
-                    @if($activity->image_path)
+                    @if($activity->image_url)
                         <div class="mt-3 flex items-center gap-3">
-                            <img src="{{ asset('storage/'.$activity->image_path) }}" alt="" class="w-20 h-20 rounded-xl object-cover border border-gray-200" />
+                            <img src="{{ $activity->image_url }}" alt="" class="w-20 h-20 rounded-xl object-cover border border-gray-200" />
                             <label class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700">
                                 <input type="checkbox" name="remove_image" value="1" class="rounded border-gray-300" />
                                 Remove image

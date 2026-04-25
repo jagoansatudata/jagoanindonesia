@@ -38,8 +38,8 @@
                             <td class="px-6 py-3">
                                 <div class="flex items-center gap-3">
                                     <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
-                                        @if($activity->image_path)
-                                            <img src="{{ asset('storage/'.$activity->image_path) }}" alt="" class="w-full h-full object-cover" />
+                                        @if($activity->image_url)
+                                            <img src="{{ $activity->image_url }}" alt="" class="w-full h-full object-cover" />
                                         @else
                                             <span class="text-xs font-semibold text-gray-500">IMG</span>
                                         @endif
