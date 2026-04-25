@@ -37,7 +37,7 @@
                         <tr>
                             <td class="px-6 py-4">
                                 @if ($teamMember->photo)
-                                    <img src="{{ asset('storage/team/' . $teamMember->photo) }}" alt="{{ $teamMember->name }}" class="w-12 h-12 rounded-full object-cover">
+                                    <img src="{{ $teamMember->photo_url }}" alt="{{ $teamMember->name }}" class="w-12 h-12 rounded-full object-cover">
                                 @else
                                     <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                                         <span class="text-gray-500 text-xs">{{ substr($teamMember->name, 0, 2) }}</span>
