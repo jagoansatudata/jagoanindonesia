@@ -43,7 +43,13 @@ class TeamMemberController extends Controller
             $photo = $request->file('photo');
             $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
 
-            Storage::disk('public')->putFileAs('team', $photo, $photoName);
+            $storedPath = Storage::disk('public')->putFileAs('team', $photo, $photoName);
+            if (!$storedPath) {
+                return back()->withInput()->withErrors([
+                    'photo' => 'Failed to upload photo. Please try again.'
+                ]);
+            }
+
             $validated['photo'] = $photoName;
         }
 
@@ -86,15 +92,21 @@ class TeamMemberController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            // Delete old photo
+            $photo = $request->file('photo');
+            $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+
+            $storedPath = Storage::disk('public')->putFileAs('team', $photo, $photoName);
+            if (!$storedPath) {
+                return back()->withInput()->withErrors([
+                    'photo' => 'Failed to upload photo. Please try again.'
+                ]);
+            }
+
+            // Delete old photo (only after new upload success)
             if ($teamMember->photo) {
                 Storage::disk('public')->delete('team/' . $teamMember->photo);
             }
 
-            $photo = $request->file('photo');
-            $photoName = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
-
-            Storage::disk('public')->putFileAs('team', $photo, $photoName);
             $validated['photo'] = $photoName;
         }
 
