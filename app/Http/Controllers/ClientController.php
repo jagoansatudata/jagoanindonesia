@@ -49,6 +49,12 @@ class ClientController extends Controller
 
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('clients', 'public');
+            if (!$logoPath) {
+                return back()->withInput()->withErrors([
+                    'logo' => 'Failed to upload logo. Please try again.'
+                ]);
+            }
+
             $client->logo_path = $logoPath;
         }
 
@@ -95,13 +101,19 @@ class ClientController extends Controller
         $client->sort_order = $validated['sort_order'] ?? 0;
 
         if ($request->hasFile('logo')) {
-            // Delete old logo if exists
+            $newLogoPath = $request->file('logo')->store('clients', 'public');
+            if (!$newLogoPath) {
+                return back()->withInput()->withErrors([
+                    'logo' => 'Failed to upload logo. Please try again.'
+                ]);
+            }
+
+            // Delete old logo (only after new upload success)
             if ($client->logo_path) {
                 Storage::disk('public')->delete($client->logo_path);
             }
-            
-            $logoPath = $request->file('logo')->store('clients', 'public');
-            $client->logo_path = $logoPath;
+
+            $client->logo_path = $newLogoPath;
         }
 
         $client->save();

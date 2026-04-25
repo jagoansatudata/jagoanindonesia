@@ -31,9 +31,9 @@
 
             <div>
                 <label for="logo" class="block text-sm font-medium text-gray-700 mb-1">Logo</label>
-                @if($client->logo_path)
+                @if($client->logo_url)
                     <div class="mb-3 flex items-center gap-4">
-                        <img id="currentLogo" src="{{ asset('storage/' . $client->logo_path) }}" alt="{{ $client->name }}" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
+                        <img id="currentLogo" src="{{ $client->logo_url }}" alt="{{ $client->name }}" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
                         <div class="text-sm text-gray-500">
                             <p>Current logo</p>
                             <p class="text-xs">Upload new logo to replace</p>

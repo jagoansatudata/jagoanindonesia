@@ -224,8 +224,8 @@
                             <div class="trusted-slider-row trusted-slider-row--top" role="list">
                                 @foreach($duplicated_clients as $client)
                                     <span role="listitem" class="trusted-logo" aria-label="{{ $client['name'] }}">
-                                        @if($client['logo_path'])
-                                            <img src="{{ asset('storage/' . $client['logo_path']) }}" alt="{{ $client['name'] }}" class="w-full h-full object-contain">
+                                        @if($client['logo_url'])
+                                            <img src="{{ $client['logo_url'] }}" alt="{{ $client['name'] }}" class="w-full h-full object-contain">
                                         @else
                                             <div class="w-full h-full flex items-center justify-center">
                                                 <span class="text-gray-400 text-xs text-center px-2">{{ Str::limit($client['name'], 15) }}</span>
@@ -239,8 +239,8 @@
                             <div class="trusted-slider-row trusted-slider-row--bottom" role="list">
                                 @foreach(array_reverse($duplicated_clients) as $client)
                                     <span role="listitem" class="trusted-logo" aria-label="{{ $client['name'] }}">
-                                        @if($client['logo_path'])
-                                            <img src="{{ asset('storage/' . $client['logo_path']) }}" alt="{{ $client['name'] }}" class="w-full h-full object-contain">
+                                        @if($client['logo_url'])
+                                            <img src="{{ $client['logo_url'] }}" alt="{{ $client['name'] }}" class="w-full h-full object-contain">
                                         @else
                                             <div class="w-full h-full flex items-center justify-center">
                                                 <span class="text-gray-400 text-xs text-center px-2">{{ Str::limit($client['name'], 15) }}</span>

@@ -240,8 +240,8 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     @foreach($clients as $client)
                         <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-center h-24 hover:bg-gray-100 transition-colors">
-                            @if($client->logo_path)
-                                <img src="{{ asset('storage/' . $client->logo_path) }}" alt="{{ $client->name }}" class="max-h-full max-w-full object-contain">
+                            @if($client->logo_url)
+                                <img src="{{ $client->logo_url }}" alt="{{ $client->name }}" class="max-h-full max-w-full object-contain">
                             @else
                                 <div class="text-center">
                                     <div class="text-xs font-medium text-gray-700 text-center">{{ Str::limit($client->name, 15) }}</div>
