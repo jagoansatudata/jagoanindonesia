@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UniversityController extends Controller
@@ -97,7 +98,11 @@ class UniversityController extends Controller
         if ($request->hasFile('logo')) {
             // Delete old logo if exists
             if ($university->logo_path) {
-                Storage::disk('public')->delete($university->logo_path);
+                $oldLogoPath = ltrim($university->logo_path, '/');
+                if (Str::startsWith($oldLogoPath, 'storage/')) {
+                    $oldLogoPath = Str::after($oldLogoPath, 'storage/');
+                }
+                Storage::disk('public')->delete($oldLogoPath);
             }
             
             $logoPath = $request->file('logo')->store('universities', 'public');
@@ -117,7 +122,11 @@ class UniversityController extends Controller
     {
         // Delete logo if exists
         if ($university->logo_path) {
-            Storage::disk('public')->delete($university->logo_path);
+            $logoPath = ltrim($university->logo_path, '/');
+            if (Str::startsWith($logoPath, 'storage/')) {
+                $logoPath = Str::after($logoPath, 'storage/');
+            }
+            Storage::disk('public')->delete($logoPath);
         }
 
         $university->delete();
