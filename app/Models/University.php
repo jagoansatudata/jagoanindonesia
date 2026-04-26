@@ -28,8 +28,20 @@ class University extends Model
         }
 
         $value = ltrim($this->logo_path, '/');
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+
         if (str_starts_with($value, 'storage/')) {
             $value = substr($value, strlen('storage/'));
+        }
+
+        if (!str_contains($value, '/')) {
+            $candidate = 'universities/' . $value;
+            if (Storage::disk('public')->exists($candidate)) {
+                return Storage::disk('public')->url($candidate);
+            }
         }
 
         if (Storage::disk('public')->exists($value)) {
