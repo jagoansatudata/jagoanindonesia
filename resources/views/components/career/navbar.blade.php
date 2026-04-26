@@ -17,6 +17,6 @@
             <a href="{{ route('career') }}#kualifikasi" class="nav-link">Kualifikasi</a>
             <a href="{{ route('career') }}#faq" class="nav-link">FAQ</a>
         </nav>
-        <a href="#" class="btn btn-dark nav-cta">Hubungi Kami <img src="/images/icon-arrow.svg" alt="" class="nav-cta-arrow-icon" width="33" height="27"></a>
+        <a href="#" class="btn btn-dark nav-cta">Hubungi Kami <img src="{{ asset('images/icon-arrow.svg') }}" alt="" class="nav-cta-arrow-icon" width="33" height="27"></a>
     </div>
 </header>

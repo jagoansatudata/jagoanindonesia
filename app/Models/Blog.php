@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class Blog extends Model
 {
@@ -80,6 +82,33 @@ class Blog extends Model
     public function getFormattedDateAttribute()
     {
         return $this->published_at ? $this->published_at->format('M d, Y') : '';
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image) {
+            return null;
+        }
+
+        if (Str::startsWith($this->image, ['http://', 'https://'])) {
+            return $this->image;
+        }
+
+        $value = ltrim($this->image, '/');
+
+        if (Str::startsWith($value, 'storage/')) {
+            $value = substr($value, strlen('storage/'));
+        }
+
+        if (Storage::disk('public')->exists($value)) {
+            return Storage::disk('public')->url($value);
+        }
+
+        if (file_exists(public_path($value))) {
+            return asset($value);
+        }
+
+        return null;
     }
 
     public function category()

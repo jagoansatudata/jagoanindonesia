@@ -33,7 +33,7 @@
                 <label for="logo" class="block text-sm font-medium text-gray-700 mb-1">Logo</label>
                 @if($university->logo_path)
                     <div class="mb-3 flex items-center gap-4">
-                        <img src="{{ asset('storage/' . $university->logo_path) }}" alt="{{ $university->name }}" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
+                        <img src="{{ $university->logo_url }}" alt="{{ $university->name }}" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
                         <div class="text-sm text-gray-500">
                             <p>Current logo</p>
                             <p class="text-xs">Upload new logo to replace</p>

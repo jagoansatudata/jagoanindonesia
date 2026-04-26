@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InternExperience;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InternExperienceController extends Controller
 {
@@ -86,10 +87,7 @@ class InternExperienceController extends Controller
 
         if ($request->hasFile('avatar_path')) {
             if ($internExperience->avatar_path) {
-                $oldPath = storage_path('app/public/' . $internExperience->avatar_path);
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                }
+                Storage::disk('public')->delete(ltrim($internExperience->avatar_path, '/'));
             }
 
             $avatarPath = $request->file('avatar_path')->store('intern-avatars', 'public');
@@ -111,10 +109,7 @@ class InternExperienceController extends Controller
     public function destroy(InternExperience $internExperience)
     {
         if ($internExperience->avatar_path) {
-            $avatarPath = storage_path('app/public/' . $internExperience->avatar_path);
-            if (file_exists($avatarPath)) {
-                unlink($avatarPath);
-            }
+            Storage::disk('public')->delete(ltrim($internExperience->avatar_path, '/'));
         }
 
         $internExperience->delete();

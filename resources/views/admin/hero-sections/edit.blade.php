@@ -63,7 +63,7 @@
                 <label for="background_image" class="block text-sm font-medium text-gray-700 mb-1">Background Image</label>
                 @if($heroSection->background_image)
                     <div class="mb-3 flex items-center gap-4">
-                        <img src="{{ asset($heroSection->background_image) }}" alt="Current background" class="h-20 w-32 object-cover rounded-lg border border-gray-200">
+                        <img src="{{ $heroSection->background_image_url }}" alt="Current background" class="h-20 w-32 object-cover rounded-lg border border-gray-200">
                         <div class="text-sm text-gray-500">
                             <p>Current background image</p>
                             <p class="text-xs">Upload new image to replace</p>

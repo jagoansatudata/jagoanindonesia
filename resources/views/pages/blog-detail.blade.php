@@ -2,7 +2,7 @@
     <x-navbar />
     
     <!-- Hero Section -->
-    <section class="section-hero" id="hero" style="background-image: url('{{ $blog->image ? asset($blog->image) : asset('images/hero/hero-1.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
+    <section class="section-hero" id="hero" style="background-image: url('{{ $blog->image_url ?: asset('images/hero/hero-1.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
         <div class="container">
             <div class="hero-content">
                 <span class="hero-tag">{{ $blog->category }}</span>
@@ -103,7 +103,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     @foreach($relatedPosts as $relatedPost)
                         <article class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
-                            <div class="w-full h-48 bg-cover bg-center" style="background-image: url('{{ $relatedPost->image ?: asset('images/hero/hero-1.jpg') }}');">
+                            <div class="w-full h-48 bg-cover bg-center" style="background-image: url('{{ $relatedPost->image_url ?: asset('images/hero/hero-1.jpg') }}');">
                             </div>
                             <div class="p-6">
                                 <div class="flex items-center gap-2 mb-3">

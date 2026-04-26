@@ -22,8 +22,8 @@
                                 <div class="career-story-divider"></div>
                                 <div class="career-story-author">
                                     <div class="career-story-avatar" aria-hidden="true">
-                                        @if($experience->avatar_path)
-                                            <img src="{{ asset('storage/' . $experience->avatar_path) }}" alt="{{ $experience->intern_name }}" />
+                                        @if($experience->avatar_url)
+                                            <img src="{{ $experience->avatar_url }}" alt="{{ $experience->intern_name }}" />
                                         @endif
                                     </div>
                                     <div>

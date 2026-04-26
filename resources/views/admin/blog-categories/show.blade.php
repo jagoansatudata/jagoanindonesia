@@ -111,8 +111,8 @@
                         @foreach($blogCategory->publishedBlogs()->latest('published_at')->take(5)->get() as $blog)
                             <div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                                 <div class="flex items-center gap-3">
-                                    @if($blog->image)
-                                        <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="w-10 h-10 object-cover rounded">
+                                    @if($blog->image_url)
+                                        <img src="{{ $blog->image_url }}" alt="{{ $blog->title }}" class="w-10 h-10 object-cover rounded">
                                     @else
                                         <div class="w-10 h-10 rounded bg-gray-300"></div>
                                     @endif

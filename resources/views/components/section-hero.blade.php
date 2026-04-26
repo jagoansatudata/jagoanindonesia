@@ -3,7 +3,7 @@
 @endphp
 <section class="hero hero--home" id="heroSlider"
     @if($heroSections->isNotEmpty())
-        style="--hero-bg-image: url('{{ ($heroSections->first()->background_image ? asset($heroSections->first()->background_image) : asset('images/hero-background.png')) }}');"
+        style="--hero-bg-image: url('{{ ($heroSections->first()->background_image_url ?: asset('images/hero-background.png')) }}');"
     @else
         style="--hero-bg-image: url('{{ asset('images/hero-background.png') }}');"
     @endif
@@ -42,7 +42,7 @@
         <div class="hero-slider-track" id="heroSliderTrack">
             @foreach($heroSections as $heroSection)
                 <div class="hero-slide"
-                     data-hero-bg="{{ $heroSection->background_image ? asset($heroSection->background_image) : asset('images/hero-background.png') }}">
+                     data-hero-bg="{{ $heroSection->background_image_url ?: asset('images/hero-background.png') }}">
                     <div class="container hero-inner">
                         <div class="hero-grid">
                             <div class="hero-copy">

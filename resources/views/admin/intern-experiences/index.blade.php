@@ -47,8 +47,8 @@
                     @forelse($experiences as $experience)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($experience->avatar_path)
-                                    <img src="{{ asset('storage/' . $experience->avatar_path) }}" alt="{{ $experience->intern_name }}" class="h-10 w-10 object-cover rounded-full">
+                                @if($experience->avatar_url)
+                                    <img src="{{ $experience->avatar_url }}" alt="{{ $experience->intern_name }}" class="h-10 w-10 object-cover rounded-full">
                                 @else
                                     <div class="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
                                         <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

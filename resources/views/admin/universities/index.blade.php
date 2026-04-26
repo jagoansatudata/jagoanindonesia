@@ -46,8 +46,8 @@
                     @forelse($universities as $university)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($university->logo_path)
-                                    <img src="{{ asset('storage/' . $university->logo_path) }}" alt="{{ $university->name }}" class="h-10 w-10 object-cover rounded-lg">
+                                @if($university->logo_url)
+                                    <img src="{{ $university->logo_url }}" alt="{{ $university->name }}" class="h-10 w-10 object-cover rounded-lg">
                                 @else
                                     <div class="h-10 w-10 bg-gray-200 rounded-lg flex items-center justify-center">
                                         <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class ClientReview extends Model
 {
@@ -21,6 +22,28 @@ class ClientReview extends Model
         'sort_order' => 'integer',
         'rating' => 'integer'
     ];
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (!$this->avatar_path) {
+            return null;
+        }
+
+        $value = ltrim($this->avatar_path, '/');
+        if (str_starts_with($value, 'storage/')) {
+            $value = substr($value, strlen('storage/'));
+        }
+
+        if (Storage::disk('public')->exists($value)) {
+            return Storage::disk('public')->url($value);
+        }
+
+        if (file_exists(public_path($value))) {
+            return asset($value);
+        }
+
+        return null;
+    }
 
     public function scopeActive($query)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClientReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ClientReviewController extends Controller
 {
@@ -79,10 +80,7 @@ class ClientReviewController extends Controller
         if ($request->hasFile('avatar_path')) {
             // Delete old avatar if exists
             if ($clientReview->avatar_path) {
-                $oldPath = storage_path('app/public/' . $clientReview->avatar_path);
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                }
+                Storage::disk('public')->delete(ltrim($clientReview->avatar_path, '/'));
             }
             
             $avatarPath = $request->file('avatar_path')->store('avatars', 'public');
@@ -105,10 +103,7 @@ class ClientReviewController extends Controller
     {
         // Delete avatar if exists
         if ($clientReview->avatar_path) {
-            $avatarPath = storage_path('app/public/' . $clientReview->avatar_path);
-            if (file_exists($avatarPath)) {
-                unlink($avatarPath);
-            }
+            Storage::disk('public')->delete(ltrim($clientReview->avatar_path, '/'));
         }
 
         $clientReview->delete();

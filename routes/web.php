@@ -76,9 +76,12 @@ Route::post('/admin/upload-image', function (Illuminate\Http\Request $request) {
     if ($request->hasFile('upload')) {
         $file = $request->file('upload');
         $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('images/blog'), $filename);
-        
-        $url = asset('images/blog/' . $filename);
+        $path = $file->storeAs('images/blog/content', $filename, 'public');
+        if (!$path) {
+            return response()->json(['error' => 'Failed to store file'], 500);
+        }
+
+        $url = Storage::disk('public')->url($path);
         
         return response()->json([
             'url' => $url

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\HeroSection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class HeroSectionController extends Controller
@@ -46,8 +47,12 @@ class HeroSectionController extends Controller
         if ($request->hasFile('background_image')) {
             $image = $request->file('background_image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/hero'), $imageName);
-            $validated['background_image'] = 'images/hero/' . $imageName;
+            $storedPath = $image->storeAs('images/hero', $imageName, 'public');
+            if ($storedPath) {
+                $validated['background_image'] = $storedPath;
+            } else {
+                $validated['background_image'] = null;
+            }
         } else {
             $validated['background_image'] = null;
         }
@@ -94,14 +99,14 @@ class HeroSectionController extends Controller
         // Handle file upload
         if ($request->hasFile('background_image')) {
             // Delete old image if exists
-            if ($heroSection->background_image && file_exists(public_path($heroSection->background_image))) {
-                unlink(public_path($heroSection->background_image));
+            if ($heroSection->background_image) {
+                Storage::disk('public')->delete(ltrim($heroSection->background_image, '/'));
             }
 
             $image = $request->file('background_image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/hero'), $imageName);
-            $validated['background_image'] = 'images/hero/' . $imageName;
+            $storedPath = $image->storeAs('images/hero', $imageName, 'public');
+            $validated['background_image'] = $storedPath ?: $heroSection->background_image;
         } else {
             // Keep existing image if no new file uploaded
             $validated['background_image'] = $heroSection->background_image;
@@ -120,8 +125,8 @@ class HeroSectionController extends Controller
     public function destroy(HeroSection $heroSection)
     {
         // Delete image file if exists
-        if ($heroSection->background_image && file_exists(public_path($heroSection->background_image))) {
-            unlink(public_path($heroSection->background_image));
+        if ($heroSection->background_image) {
+            Storage::disk('public')->delete(ltrim($heroSection->background_image, '/'));
         }
 
         $heroSection->delete();

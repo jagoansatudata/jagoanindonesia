@@ -145,7 +145,7 @@
                         @if($blog->image)
                             <div class="mt-2">
                                 <p class="text-xs text-gray-600 mb-1">Current image:</p>
-                                <img src="{{ asset($blog->image) }}" alt="Current image" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
+                                <img src="{{ $blog->image_url }}" alt="Current image" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
                             </div>
                         @endif
                     </div>

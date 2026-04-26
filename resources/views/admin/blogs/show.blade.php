@@ -21,8 +21,8 @@
             <!-- Header Info -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    @if($blog->image)
-                        <img src="{{ asset($blog->image) }}" alt="{{ $blog->title }}" class="w-20 h-20 object-cover rounded-xl border border-gray-200">
+                    @if($blog->image_url)
+                        <img src="{{ $blog->image_url }}" alt="{{ $blog->title }}" class="w-20 h-20 object-cover rounded-xl border border-gray-200">
                     @else
                         <div class="w-20 h-20 rounded-xl bg-gray-100 flex items-center justify-center border border-gray-200">
                             <span class="text-xs font-semibold text-gray-500">IMG</span>

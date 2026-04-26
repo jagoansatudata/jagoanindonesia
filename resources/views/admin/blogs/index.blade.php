@@ -98,8 +98,8 @@
                             <td class="px-6 py-3">
                                 <div class="flex items-center gap-3">
                                     <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
-                                        @if($blog->image)
-                                            <img src="{{ asset($blog->image) }}" alt="" class="w-full h-full object-cover" />
+                                        @if($blog->image_url)
+                                            <img src="{{ $blog->image_url }}" alt="" class="w-full h-full object-cover" />
                                         @else
                                             <span class="text-xs font-semibold text-gray-500">IMG</span>
                                         @endif

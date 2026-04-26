@@ -74,7 +74,7 @@
                 <label for="avatar_path" class="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
                 @if($internExperience->avatar_path)
                     <div class="mb-3 flex items-center gap-4">
-                        <img src="{{ asset('storage/' . $internExperience->avatar_path) }}" alt="{{ $internExperience->intern_name }}" class="h-20 w-20 object-cover rounded-full border border-gray-200">
+                        <img src="{{ $internExperience->avatar_url }}" alt="{{ $internExperience->intern_name }}" class="h-20 w-20 object-cover rounded-full border border-gray-200">
                         <div class="text-sm text-gray-500">
                             <p>Current avatar</p>
                             <p class="text-xs">Upload new avatar to replace</p>

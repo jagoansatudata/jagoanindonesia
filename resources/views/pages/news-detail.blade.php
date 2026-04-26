@@ -20,9 +20,7 @@
             <div class="lg:col-span-2">
                 <!-- Article Image -->
                 @php
-                    $featuredImage = $news->image
-                        ? (Str::startsWith($news->image, ['http://', 'https://', '/']) ? $news->image : asset($news->image))
-                        : asset('images/hero/hero-1.jpg');
+                    $featuredImage = $news->image_url ?: asset('images/hero/hero-1.jpg');
                 @endphp
                 <div class="w-full h-96 bg-cover bg-center rounded-[16px] mb-8" style="background-image: url('{{ $featuredImage }}');">
                 </div>
@@ -415,9 +413,7 @@
                     <div class="space-y-4">
                         @forelse($topPosts as $post)
                             @php
-                                $topPostImage = $post->image
-                                    ? (Str::startsWith($post->image, ['http://', 'https://', '/']) ? $post->image : asset($post->image))
-                                    : asset('images/hero/hero-1.jpg');
+                                $topPostImage = $post->image_url ?: asset('images/hero/hero-1.jpg');
                             @endphp
                             <div class="flex gap-3">
                                 <div class="w-16 h-16 bg-cover bg-center rounded-lg flex-shrink-0" style="background-image: url('{{ $topPostImage }}');">

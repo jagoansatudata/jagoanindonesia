@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogRequest;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
@@ -27,30 +28,46 @@ class BlogController extends Controller
         $processedContent = $content;
         
         foreach ($matches[1] as $index => $base64Data) {
-            // Decode base64 data
             $imageData = base64_decode($base64Data);
-            
-            // Get image info
-            $finfo = finfo_open();
-            finfo_buffer($finfo, $imageData, FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($finfo);
-            finfo_close($finfo);
-            
-            // Generate unique filename
-            $extension = str_replace('image/', '', $mimeType);
-            $filename = 'blog_' . time() . '_' . $index . '.' . $extension;
-            
-            // Save image to storage
-            $path = 'images/blog/' . $filename;
-            file_put_contents(public_path($path), $imageData);
-            
-            // Replace base64 image with file path in content
+            if ($imageData === false) {
+                continue;
+            }
+
+            $filename = 'blog_' . time() . '_' . $index . '.png';
+            $path = 'images/blog/content/' . $filename;
+
+            $stored = Storage::disk('public')->put($path, $imageData);
+            if (!$stored) {
+                continue;
+            }
+
             $oldImageTag = $matches[0][$index];
-            $newImageTag = str_replace('src="data:image/' . $mimeType . ';base64,' . $base64Data, 'src="' . asset($path) . '"', $oldImageTag);
-            $processedContent = str_replace($oldImageTag, $newImageTag, $processedContent);
+            $newImageTag = preg_replace(
+                '/src="data:image\/[^;]+;base64,[^"]+"/i',
+                'src="' . e(Storage::disk('public')->url($path)) . '"',
+                $oldImageTag
+            );
+            if ($newImageTag) {
+                $processedContent = str_replace($oldImageTag, $newImageTag, $processedContent);
+            }
         }
         
         return $processedContent;
+    }
+
+    private function normalizePublicDiskPath(?string $value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        $value = ltrim($value, '/');
+
+        if (str_starts_with($value, 'storage/')) {
+            $value = substr($value, strlen('storage/'));
+        }
+
+        return $value;
     }
 
     /**
@@ -104,7 +121,7 @@ class BlogController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('images/blog', $imageName, 'public');
-            $validated['image'] = 'storage/images/blog/' . $imageName;
+            $validated['image'] = 'images/blog/' . $imageName;
         }
 
         if ($validated['status'] === 'published') {
@@ -155,14 +172,15 @@ class BlogController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            if ($blog->image) {
-                Storage::disk('public')->delete($blog->image);
+            $existing = $this->normalizePublicDiskPath($blog->image);
+            if ($existing) {
+                Storage::disk('public')->delete($existing);
             }
-            
+
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->storeAs('images/blog', $imageName, 'public');
-            $validated['image'] = 'storage/images/blog/' . $imageName;
+            $validated['image'] = 'images/blog/' . $imageName;
         }
 
         if ($validated['status'] === 'published') {
