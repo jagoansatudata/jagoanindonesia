@@ -1,4 +1,4 @@
-<x-layouts.app :title="'{$blog->title} - Jagoan Indonesia'">
+<x-layouts.app :title="$blog->title . ' - Jagoan Indonesia'">
     <x-navbar />
     
     <!-- Hero Section -->

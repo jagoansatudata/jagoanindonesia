@@ -3,7 +3,7 @@
     use Illuminate\Support\Str;
 @endphp
 
-<x-layouts.app :title="'{$news->title} - Jagoan Indonesia'">
+<x-layouts.app :title="$news->title . ' - Jagoan Indonesia'">
     <x-navbar />
 
     <div class="bg-gray-100 pt-40 pb-12">
