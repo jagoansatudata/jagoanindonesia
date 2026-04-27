@@ -5,30 +5,31 @@
         <section class="section section-expertise" aria-labelledby="expertise-heading">
             <div class="container">
                 <h2 id="expertise-heading" class="expertise-heading">
-                    <span class="expertise-heading-line">We Drive Business Success</span>
-                    <span class="expertise-heading-line expertise-heading-line--emphasis">Through Expertise and Strategy</span>
+                    <span class="expertise-heading-line"><span class="expertise-heading-bold">Local</span> Potential to</span>
+                    <span class="expertise-heading-line">Scalable <span class="expertise-heading-bold">Growth.</span></span>
+                    <span class="description">We build capabilities, implement systems, and connect ecosystems.</span>
                 </h2>
                 <div class="expertise-grid">
                     <article class="expertise-card">
                         <div class="expertise-card-icon">
                             <img src="{{ asset('images/group.svg') }}" alt="" width="48" height="48" />
                         </div>
-                        <h3>Program Inkubasi Bisnis</h3>
-                        <p>Jagoan Indonesia menyediakan program inkubasi seperti Jagoan Bisnis, Jagoan Digital, dan Jagoan Tani, yang membantu startup dan UKM mengembangkan usaha mereka melalui pelatihan dan pendampingan.</p>
+                        <h3>Capability Development</h3>
+                        <p>Mengembangkan kapabillitas dan mendorong inovasi melalui inkubasi, mentoring, dan program berbasis praktik.</p>
                     </article>
                     <article class="expertise-card">
                         <div class="expertise-card-icon">
                             <img src="{{ asset('images/collab.svg') }}" alt="" width="48" height="48" />
                         </div>
-                        <h3>Kolaborasi dengan Ekosistem Jagoan</h3>
-                        <p>Melalui ekosistem Jagoan, kami bermitra dengan perusahaan digital, agensi desain, serta tim analisis data untuk menghadirkan inovasi yang relevan.</p>
+                        <h3>Research, System, & Data Implementation</h3>
+                        <p>Melakukan riset, merancang sistem, dan implementasi solusi berbasis data untuk mendukung pengambilan keputusan dan eksekusi.</p>
                     </article>
                     <article class="expertise-card">
                         <div class="expertise-card-icon">
                             <img src="{{ asset('images/strong-data.svg') }}" alt="" width="48" height="48" />
                         </div>
-                        <h3>Penguatan Data dan Transformasi Digital Bisnis</h3>
-                        <p>Jagoan Indonesia menawarkan inovasi bagi klien dengan cara mengubah data menjadi insight, digitalisasi, dan pengembangan sistem yang lebih efisien.</p>
+                        <h3>Ecosystem & Collaboration</h3>
+                        <p>Menghubungkan berbagai pihak dalam ekosistem kolaboratif untuk memperluas skala dan keberlanjutan.</p>
                     </article>
                 </div>
             </div>
@@ -37,8 +38,9 @@
         <section id="tentang" class="section section-jagoan-suite" aria-label="Jagoan Academy and Jagoan Data">
             <div class="container">
                 <h2 class="jagoan-suite-heading-sub">
-                    <span>We Provide Modern Business</span>
-                    <span class="jagoan-suite-heading-sub--bold">Consulting Solutions</span>
+                    <span class="expertise-heading-line">Built for <span class="expertise-heading-bold">Execution</span></span>
+                    <span class="expertise-heading-line">Layanan dan Solusi yang Kami Kembangkan</span>
+                    <span class="description">Dirancang untuk menjawab kebutuhan pengembangan, implementasi, dan kolaborasi dalam skala organisasi dan ekosistem.</span>                    
                 </h2>
 
                 <h3 class="jagoan-suite-heading jagoan-suite-heading--spaced">
@@ -56,7 +58,7 @@
                             <img src="{{ asset('images/icon-data.svg') }}" alt="" width="85" height="59">
                         </div>
                         <h4 class="jagoan-suite-card-title">Business &amp; Data Research</h4>
-                        <p class="jagoan-suite-card-desc">Analisis, perencanaan, anggaran, kebijakan, dan evaluasi dampak yang bisa dipakai untuk pengambilan keputusan.</p>
+                        <p class="jagoan-suite-card-desc">Riset dan analisis berbasis data untuk mendukung strategi, kebijakan, dan pengambilan keputusan.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--data-1" aria-hidden="true">
                         <img
                                 src="{{ asset('images/img-data.png') }}"
@@ -72,7 +74,7 @@
                             <img src="{{ asset('images/icon-dashboard.svg') }}" alt="" width="85" height="59">
                         </div>
                         <h4 class="jagoan-suite-card-title">Dashboard Analytics</h4>
-                        <p class="jagoan-suite-card-desc">Visualisasi data real-time untuk mendukung keputusan berbasis data yang akurat.</p>
+                        <p class="jagoan-suite-card-desc">Visualisasi data real-time untuk mendukung keputusan berbasis data/insight.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--data-2" aria-hidden="true">
                         <img
                                 src="{{ asset('images/img-dashboard.png') }}"
@@ -88,7 +90,7 @@
                             <img src="{{ asset('images/icon-process.svg') }}" alt="" width="85" height="59">
                         </div>
                         <h4 class="jagoan-suite-card-title">Process Digitalization</h4>
-                        <p class="jagoan-suite-card-desc">Transformasi proses kerja agar lebih efisien, terintegrasi, dan terdokumentasi secara digital.</p>
+                        <p class="jagoan-suite-card-desc">Transformasi proses kerja menjadi lebih efisien dan terintegrasi secara digital.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--data-3" aria-hidden="true">
                         <img
                                 src="{{ asset('images/img-process.png') }}"
@@ -104,7 +106,7 @@
                             <img src="{{ asset('images/icon-web.svg') }}" alt="" width="85" height="59">
                         </div>
                         <h4 class="jagoan-suite-card-title">Custom Web/App</h4>
-                        <p class="jagoan-suite-card-desc">Pengembangan web dan aplikasi sesuai kebutuhan bisnis, mulai dari strategi hingga implementasi.</p>
+                        <p class="jagoan-suite-card-desc">Pengembangan web dan aplikasi sesuai kebutuhan bisnis dan tujuan strategis.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--data-4" aria-hidden="true">
                         <img
                                 src="{{ asset('images/img-web.png') }}"
@@ -131,7 +133,7 @@
                             <img src="{{ asset('images/icon-business.svg') }}" alt="" width="85" height="59">
                         </div>
                         <h4 class="jagoan-suite-card-title">Business Incubation</h4>
-                        <p class="jagoan-suite-card-desc">Lingkungan suportif dengan akses ke investor, pelanggan, pakar, dan komunitas.</p>
+                        <p class="jagoan-suite-card-desc">Program inkubasi sebagai ruang bertumbuh,  mengembangkan ide, memvalidasi masalah dan solusi, model bisnis, dan kesiapan untuk berinovasi menjadi lebih baik lagi.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--academy-1" aria-hidden="true">
                             <img
                                 src="{{ asset('images/img-business.png') }}"
@@ -162,7 +164,7 @@
                         <div class="jagoan-suite-card-icon">
                             <img src="{{ asset('images/icon-mentoring.svg') }}" alt="" width="85" height="59">
                         </div>
-                        <h4 class="jagoan-suite-card-title">Mentoring &amp; Fasilitation</h4>
+                        <h4 class="jagoan-suite-card-title">Mentoring &amp; Facilitation</h4>
                         <p class="jagoan-suite-card-desc">Pendampingan strategis yang berfokus pada penguatan soft skill dan pertumbuhan profesional.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--academy-3" aria-hidden="true">
                             <img
@@ -178,7 +180,7 @@
                         <div class="jagoan-suite-card-icon">
                             <img src="{{ asset('images/icon-programs.svg') }}" alt="" width="85" height="59">
                         </div>
-                        <h4 class="jagoan-suite-card-title">Programs &amp; Events</h4>
+                        <h4 class="jagoan-suite-card-title">Programs &amp; Ecosystem Events</h4>
                         <p class="jagoan-suite-card-desc">Inisiatif kolaboratif yang mendorong inovasi dan keterlibatan komunitas.</p>
                         <div class="jagoan-suite-card-photo jagoan-suite-card-photo--academy-4" aria-hidden="true">
                             <img
@@ -265,12 +267,12 @@
                     <div class="activities-header-layout">
                         <div class="activities-title">
                             <h2 id="activities-heading" class="activities-heading">
-                                <span class="activities-heading-line">Learn Something About</span>
-                                <span class="activities-heading-strong">Our Activities</span>
+                                <span class="activities-heading-line">Explore Our</span>
+                                <span class="activities-heading-strong">Program & Initiatives</span>
                             </h2>
                         </div>
                         <div class="activities-description">
-                            <p class="activities-desc">Jagoan Indonesia menjalankan aktivitas pengembangan kapasitas, inkubasi bisnis, kajian dan riset, serta implementasi sistem dan teknologi untuk mendukung pertumbuhan organisasi dan usaha secara berkelanjutan.</p>
+                            <p class="activities-desc">Jagoan Indonesia merancang dan menjalankan berbagai program berbasis kebutuhan. Mulai dari program inkubasi, mentoring,  riset, hingga implementasi solusi yang terhubung dalam satu ekosistem pengembangan berkelanjutan.</p>
                         </div>
                     </div>
                 </div>

@@ -379,6 +379,15 @@ body {
     color: #1F2937 !important;
 }
 
+.expertise-heading-bold {
+    font-weight: 700 !important;
+    color: #1F2937 !important;
+}
+
+.description {
+    font-size: 18px !important;
+}
+
 .expertise-grid {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
