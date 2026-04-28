@@ -27,8 +27,7 @@
                     <img src="{{ asset('images/icon-team.svg') }}" alt="" width="48" height="48" />
                 </div>
                 <h3 class="career-feature-title">Team Reflection & Feedback</h3>
-                <p class="career-feature-desc">Lingkungan kerja yang sehat mendorong evaluasi bersama, agar tim dapat memahami proses yang telah berjalan 
-dan terus melakukan perbaikan.</p>
+                <p class="career-feature-desc">Lingkungan kerja yang sehat mendorong evaluasi bersama, agar tim dapat memahami proses yang telah berjalan dan terus melakukan perbaikan.</p>
             </article>
         </div>
     </div>

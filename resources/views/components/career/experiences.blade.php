@@ -90,23 +90,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     let currentIndex = 0;
-    const cardWidth = 320; // card width + gap
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+        return;
+    }
+    const cardWidth = isMobile ? 296 : 320; // Adjusted for mobile
     const maxScroll = cards.scrollWidth - wrapper.clientWidth;
     const totalCards = cards.children.length;
-    const maxIndex = Math.max(0, totalCards - 2);
+    const maxIndex = Math.max(0, totalCards - (isMobile ? 1 : 2));
     
     function updateSlider() {
         const scrollPosition = currentIndex * cardWidth;
-        cards.style.transform = `translateX(-${scrollPosition}px)`;
+        currentTranslate = -scrollPosition;
+        cards.style.transform = `translateX(${currentTranslate}px)`;
         
         // Update button states
         prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
         prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
         
-        nextBtn.style.opacity = scrollPosition >= maxScroll ? '0.5' : '1';
-        nextBtn.style.cursor = scrollPosition >= maxScroll ? 'not-allowed' : 'pointer';
+        nextBtn.style.opacity = scrollPosition <= -maxScroll ? '0.5' : '1';
+        nextBtn.style.cursor = scrollPosition <= -maxScroll ? 'not-allowed' : 'pointer';
     }
     
+    function snapToCard() {
+        const movedBy = currentTranslate - prevTranslate;
+        if (movedBy < -100 && currentIndex < maxIndex) currentIndex += 1;
+        if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+        updateSlider();
+    }
+    
+    // Touch/Mouse events for mobile swipe
+    function handleStart(e) {
+        if (!isMobile) return;
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        prevTranslate = currentTranslate;
+        cards.style.transition = 'none';
+    }
+    
+    function handleMove(e) {
+        if (!isDragging || !isMobile) return;
+        e.preventDefault();
+        const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        const diff = currentX - startX;
+        currentTranslate = prevTranslate + diff;
+        cards.style.transform = `translateX(${currentTranslate}px)`;
+    }
+    
+    function handleEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        cards.style.transition = 'transform 0.3s ease';
+        snapToCard();
+    }
+    
+    // Button events
     prevBtn.addEventListener('click', function() {
         if (currentIndex > 0) {
             currentIndex--;
@@ -118,6 +162,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentIndex < maxIndex) {
             currentIndex++;
             updateSlider();
+        }
+    });
+    
+    // Touch/Mouse events
+    cards.addEventListener('touchstart', handleStart, { passive: true });
+    cards.addEventListener('touchmove', handleMove, { passive: false });
+    cards.addEventListener('touchend', handleEnd);
+    cards.addEventListener('mousedown', handleStart);
+    cards.addEventListener('mousemove', handleMove);
+    cards.addEventListener('mouseup', handleEnd);
+    cards.addEventListener('mouseleave', handleEnd);
+    
+    // Prevent text selection during drag
+    cards.addEventListener('selectstart', (e) => {
+        if (isDragging) e.preventDefault();
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+            location.reload(); // Reload to apply proper mobile/desktop styles
         }
     });
     

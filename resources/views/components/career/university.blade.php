@@ -52,3 +52,110 @@
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.career-univ-logos');
+    const indicators = document.querySelectorAll('.slide-indicator');
+    
+    if (!container || indicators.length === 0) {
+        return;
+    }
+
+    let currentIndex = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+        container.style.overflowX = 'auto';
+        container.style.overflowY = 'hidden';
+        container.style.whiteSpace = 'nowrap';
+        container.style.transform = 'none';
+        container.style.transition = 'none';
+        return;
+    }
+    const logoWidth = isMobile ? 180 : 200; // Adjusted for mobile
+    const totalLogos = container.children.length;
+    const maxIndex = Math.max(0, totalLogos - 1);
+    
+    function updateSlider() {
+        const scrollPosition = currentIndex * logoWidth;
+        currentTranslate = -scrollPosition;
+        container.style.transform = `translateX(${currentTranslate}px)`;
+        
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    function snapToLogo() {
+        const movedBy = currentTranslate - prevTranslate;
+        if (movedBy < -50 && currentIndex < maxIndex) currentIndex += 1;
+        if (movedBy > 50 && currentIndex > 0) currentIndex -= 1;
+        updateSlider();
+    }
+    
+    // Touch/Mouse events for mobile swipe
+    function handleStart(e) {
+        if (!isMobile) return;
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        prevTranslate = currentTranslate;
+        container.style.transition = 'none';
+    }
+    
+    function handleMove(e) {
+        if (!isDragging || !isMobile) return;
+        e.preventDefault();
+        const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        const diff = currentX - startX;
+        currentTranslate = prevTranslate + diff;
+        container.style.transform = `translateX(${currentTranslate}px)`;
+    }
+    
+    function handleEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        container.style.transition = 'transform 0.3s ease';
+        snapToLogo();
+    }
+    
+    // Indicator click events
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentIndex = index;
+            updateSlider();
+        });
+    });
+    
+    // Touch/Mouse events
+    container.addEventListener('touchstart', handleStart, { passive: true });
+    container.addEventListener('touchmove', handleMove, { passive: false });
+    container.addEventListener('touchend', handleEnd);
+    container.addEventListener('mousedown', handleStart);
+    container.addEventListener('mousemove', handleMove);
+    container.addEventListener('mouseup', handleEnd);
+    container.addEventListener('mouseleave', handleEnd);
+    
+    // Prevent text selection during drag
+    container.addEventListener('selectstart', (e) => {
+        if (isDragging) e.preventDefault();
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+            location.reload(); // Reload to apply proper mobile/desktop styles
+        }
+    });
+    
+    // Initialize
+    updateSlider();
+});
+</script>

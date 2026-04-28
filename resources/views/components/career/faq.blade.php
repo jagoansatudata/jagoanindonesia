@@ -137,8 +137,28 @@
         padding: 20px 16px;
     }
     
+    .faq-header {
+        margin-bottom: 30px !important;
+    }
+    
+    .faq-small {
+        font-size: 24px !important;
+    }
+    
+    .faq-large {
+        font-size: 28px !important;
+    }
+    
     .faq-title {
-        font-size: 2rem;
+        font-size: 28px !important;
+    }
+    
+    .faq-container {
+        gap: 12px !important;
+    }
+    
+    .faq-item {
+        border-radius: 8px !important;
     }
     
     .faq-question {
@@ -146,11 +166,17 @@
     }
     
     .faq-question h3 {
-        font-size: 1rem;
+        font-size: 14px !important;
+        line-height: 1.4 !important;
     }
     
     .faq-item.active .faq-answer {
         padding: 0 20px 16px 20px;
+    }
+    
+    .faq-answer p {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
     }
 }
 </style>
