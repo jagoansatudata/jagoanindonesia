@@ -99,7 +99,8 @@
                                 <div class="flex items-center gap-3">
                                     <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
                                         @if($blog->image_url)
-                                            <img src="{{ $blog->image_url }}" alt="" class="w-full h-full object-cover" />
+                                            <img src="{{ $blog->image_url }}" alt="" class="w-full h-full object-cover" onerror="this.style.display='none'; const fb=this.parentElement.querySelector('[data-img-fallback]'); if(fb){ fb.style.display='block'; }" />
+                                            <span data-img-fallback style="display:none" class="text-xs font-semibold text-gray-500">IMG</span>
                                         @else
                                             <span class="text-xs font-semibold text-gray-500">IMG</span>
                                         @endif

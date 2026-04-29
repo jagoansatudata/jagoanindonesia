@@ -145,7 +145,10 @@
                         @if($blog->image)
                             <div class="mt-2">
                                 <p class="text-xs text-gray-600 mb-1">Current image:</p>
-                                <img src="{{ $blog->image_url }}" alt="Current image" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
+                                <div class="inline-flex items-center justify-center h-20 w-20 rounded-lg border border-gray-200 bg-gray-100 overflow-hidden">
+                                    <img src="{{ $blog->image_url }}" alt="Current image" class="h-20 w-20 object-cover" onerror="this.style.display='none'; const fb=this.parentElement.querySelector('[data-img-fallback]'); if(fb){ fb.style.display='block'; }" />
+                                    <span data-img-fallback style="display:none" class="text-xs font-semibold text-gray-500">IMG</span>
+                                </div>
                             </div>
                         @endif
                     </div>

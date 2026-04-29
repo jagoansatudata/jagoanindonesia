@@ -1252,23 +1252,32 @@ body {
     .career-cta-inner {
         padding: 3rem 1.5rem !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 456px !important;
     }
 
     .career-cta-spacer {
-        width: 100% !important;
-        min-height: 200px !important;
-        flex: 0 0 auto !important;
+        display: none !important;
     }
 
     .career-cta-copy {
         width: 100% !important;
         max-width: none !important;
+        text-align: center !important;
     }
 
     .career-cta-title {
         font-size: 30px !important;
         line-height: 1.25 !important;
+        text-align: center !important;
+    }
+
+    .career-cta-btn {
+        width: 100% !important;
+        max-width: 320px !important;
+        justify-content: center !important;
+        align-self: center !important;
     }
 }
 
@@ -2031,6 +2040,9 @@ body {
         scroll-snap-type: x mandatory !important;
         transition: transform 0.3s ease !important;
         cursor: grab !important;
+        overscroll-behavior-x: contain !important;
+        touch-action: pan-x !important;
+        scrollbar-width: none !important;
     }
 
     .career-univ-logos::-webkit-scrollbar {
