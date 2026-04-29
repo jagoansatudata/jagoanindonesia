@@ -38,7 +38,7 @@ class NewsController extends Controller
                 'author' => $blog->author,
                 'comments' => $blog->comments_count, // Uses accessor that returns approved comments count
                 'date' => $blog->formatted_date,
-                'image' => $blog->image ?: '/images/hero/hero-1.jpg',
+                'image' => $blog->image_url ?: asset('images/hero/hero-1.jpg'),
                 'category' => $blog->category,
                 'slug' => $blog->slug,
                 'excerpt' => $blog->excerpt,
