@@ -44,7 +44,7 @@ class BlogController extends Controller
             $oldImageTag = $matches[0][$index];
             $newImageTag = preg_replace(
                 '/src="data:image\/[^;]+;base64,[^"]+"/i',
-                'src="' . e(Storage::disk('public')->url($path)) . '"',
+                'src="' . e(asset('storage/' . $path)) . '"',
                 $oldImageTag
             );
             if ($newImageTag) {

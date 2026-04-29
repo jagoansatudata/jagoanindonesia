@@ -81,7 +81,7 @@ Route::post('/admin/upload-image', function (Illuminate\Http\Request $request) {
             return response()->json(['error' => 'Failed to store file'], 500);
         }
 
-        $url = Storage::disk('public')->url($path);
+        $url = asset('storage/' . $path);
         
         return response()->json([
             'url' => $url
