@@ -135,4 +135,43 @@ class HeroSectionController extends Controller
             ->route('admin.hero-sections.index')
             ->with('success', 'Hero section deleted successfully.');
     }
+
+    public function duplicate(HeroSection $heroSection)
+    {
+        $data = $heroSection->only([
+            'title',
+            'subtitle',
+            'button_text',
+            'button_url',
+            'background_image',
+            'is_active',
+        ]);
+
+        $data['title'] = $data['title'] . ' (Copy)';
+        $data['is_active'] = false;
+
+        $bg = $data['background_image'] ?? null;
+        if ($bg) {
+            $bg = ltrim($bg, '/');
+            if (str_starts_with($bg, 'storage/')) {
+                $bg = substr($bg, strlen('storage/'));
+            }
+
+            if (Storage::disk('public')->exists($bg)) {
+                $ext = pathinfo($bg, PATHINFO_EXTENSION);
+                $imageName = time() . '_' . uniqid() . ($ext ? ('.' . $ext) : '');
+                $newPath = 'images/hero/' . $imageName;
+
+                if (Storage::disk('public')->copy($bg, $newPath)) {
+                    $data['background_image'] = $newPath;
+                }
+            }
+        }
+
+        HeroSection::create($data);
+
+        return redirect()
+            ->route('admin.hero-sections.index')
+            ->with('success', 'Hero section duplicated successfully.');
+    }
 }

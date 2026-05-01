@@ -163,6 +163,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('career-stats/{careerStat}/toggle', [CareerStatsController::class, 'toggle'])->name('admin.career-stats.toggle');
 
     Route::resource('hero-sections', HeroSectionController::class)->names('admin.hero-sections')->except(['show']);
+    Route::post('hero-sections/{heroSection}/duplicate', [HeroSectionController::class, 'duplicate'])->name('admin.hero-sections.duplicate');
 
     Route::delete('blogs/bulk-delete', [BlogController::class, 'bulkDelete'])->name('admin.blogs.bulk-delete');
     Route::post('blogs/bulk-restore', [BlogController::class, 'bulkRestore'])->name('admin.blogs.bulk-restore');
