@@ -188,7 +188,7 @@
 <script>
 let currentSlide = 0;
 let slideInterval;
-const heroSections = @json($heroSections ?? []);
+const heroSections = @json(($heroSections ?? collect([]))->values());
 
 function initHeroSlider() {
     updateSlider();
