@@ -20,6 +20,10 @@
                     </button>
                 @endforeach
             </div>
+
+            <div class="hero-slider-progress" aria-hidden="true" style="display: none;">
+                <div class="hero-slider-progress-bar" id="heroSliderProgressBar"></div>
+            </div>
         @endif
 
         <!-- Slider Track -->
@@ -124,6 +128,26 @@
     z-index: 10;
 }
 
+.hero-slider-progress {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.hero-slider-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #DB3D3E;
+    border-radius: inherit;
+}
+
 .hero-slider-indicator {
     width: 40px;
     height: 4px;
@@ -160,6 +184,14 @@
 .hero-slide {
     min-width: 100%;
     position: relative;
+    opacity: 0;
+    transform: scale(0.985);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hero-slide.is-active {
+    opacity: 1;
+    transform: scale(1);
 }
 
 @media (max-width: 768px) {
@@ -177,6 +209,11 @@
         bottom: 1rem;
         gap: 0.5rem;
     }
+
+    .hero-slider-progress {
+        bottom: 0.75rem;
+        width: 96px;
+    }
     
     .hero-slider-indicator {
         width: 32px;
@@ -188,38 +225,39 @@
 <script>
 let currentSlide = 0;
 let slideInterval;
-const heroSections = @json(($heroSections ?? collect([]))->values());
+let progressRafId;
+let progressStartTs;
+const slideDurationMs = 5000;
+let slideCount = 0;
+const rawHeroSections = @json(($heroSections ?? collect([]))->values());
+const heroSections = Array.isArray(rawHeroSections) ? rawHeroSections : Object.values(rawHeroSections ?? {});
 
 function initHeroSlider() {
+    slideCount = document.querySelectorAll('#heroSliderTrack .hero-slide').length;
     updateSlider();
-    if (heroSections.length <= 1) return;
+    if (slideCount <= 1) return;
     
     // Auto-play slider
     startAutoSlide();
-    
-    // Pause on hover
-    const slider = document.getElementById('heroSlider');
-    slider.addEventListener('mouseenter', stopAutoSlide);
-    slider.addEventListener('mouseleave', startAutoSlide);
 }
 
 function slideHero(direction) {
-    if (heroSections.length <= 1) return;
+    if (slideCount <= 1) return;
     
     const track = document.getElementById('heroSliderTrack');
     const indicators = document.querySelectorAll('.hero-slider-indicator');
     
     if (direction === 'next') {
-        currentSlide = (currentSlide + 1) % heroSections.length;
+        currentSlide = (currentSlide + 1) % slideCount;
     } else {
-        currentSlide = (currentSlide - 1 + heroSections.length) % heroSections.length;
+        currentSlide = (currentSlide - 1 + slideCount) % slideCount;
     }
     
     updateSlider();
 }
 
 function goToSlide(index) {
-    if (heroSections.length <= 1) return;
+    if (slideCount <= 1) return;
     
     currentSlide = index;
     updateSlider();
@@ -232,6 +270,7 @@ function updateSlider() {
     const indicators = document.querySelectorAll('.hero-slider-indicator');
     const slider = document.getElementById('heroSlider');
     const slides = document.querySelectorAll('.hero-slide');
+    const progressBar = document.getElementById('heroSliderProgressBar');
     
     // Update slide position
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -244,6 +283,14 @@ function updateSlider() {
             slider.style.setProperty('--hero-bg-image', `url('${bg}')`);
         }
     }
+
+    slides.forEach((slide, index) => {
+        slide.classList.toggle('is-active', index === currentSlide);
+    });
+
+    if (progressBar) {
+        progressBar.style.width = '0%';
+    }
     
     // Update indicators
     indicators.forEach((indicator, index) => {
@@ -252,19 +299,58 @@ function updateSlider() {
 }
 
 function startAutoSlide() {
-    if (heroSections.length <= 1) return;
-    
+    slideCount = document.querySelectorAll('#heroSliderTrack .hero-slide').length;
+
+    if (slideCount <= 1) return;
+
+    stopAutoSlide();
+
+    const progressBar = document.getElementById('heroSliderProgressBar');
+    progressStartTs = Date.now();
+
     slideInterval = setInterval(() => {
-        slideHero('next');
-    }, 5000);
+        const elapsed = Date.now() - progressStartTs;
+        const progress = Math.min(1, elapsed / slideDurationMs);
+
+        if (progressBar) {
+            progressBar.style.width = `${progress * 100}%`;
+        }
+
+        if (progress >= 1) {
+            slideHero('next');
+            progressStartTs = Date.now();
+        }
+    }, 50);
 }
 
 function stopAutoSlide() {
     if (slideInterval) {
         clearInterval(slideInterval);
+        slideInterval = undefined;
+    }
+
+    if (progressRafId) {
+        cancelAnimationFrame(progressRafId);
+        progressRafId = undefined;
     }
 }
 
 // Initialize slider when DOM is ready
-document.addEventListener('DOMContentLoaded', initHeroSlider);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroSlider);
+} else {
+    initHeroSlider();
+}
+
+window.addEventListener('load', initHeroSlider);
+
+setTimeout(initHeroSlider, 0);
+
+window.__heroSlider = {
+    initHeroSlider,
+    startAutoSlide,
+    stopAutoSlide,
+    get slideCount() { return slideCount; },
+    get currentSlide() { return currentSlide; },
+};
 </script>
