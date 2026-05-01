@@ -33,7 +33,7 @@ class HeroSection extends Model
         }
 
         if (Storage::disk('public')->exists($value)) {
-            return Storage::disk('public')->url($value);
+            return asset('storage/' . $value);
         }
 
         if (file_exists(public_path($value))) {

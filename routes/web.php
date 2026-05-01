@@ -81,6 +81,17 @@ Route::get('/storage/images/blog/content/{filename}', function (string $filename
     return response()->file(Storage::disk('public')->path($path));
 })->where('filename', '[^/]+');
 
+Route::get('/storage/images/hero/{filename}', function (string $filename) {
+    $filename = basename($filename);
+    $path = 'images/hero/' . $filename;
+
+    if (!Storage::disk('public')->exists($path)) {
+        abort(404);
+    }
+
+    return response()->file(Storage::disk('public')->path($path));
+})->where('filename', '[^/]+');
+
 Route::get('/career', [HomeController::class, 'career'])->name('career');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news');
