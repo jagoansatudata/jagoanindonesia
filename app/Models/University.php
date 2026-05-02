@@ -40,12 +40,12 @@ class University extends Model
         if (!str_contains($value, '/')) {
             $candidate = 'universities/' . $value;
             if (Storage::disk('public')->exists($candidate)) {
-                return Storage::disk('public')->url($candidate);
+                return asset('storage/' . $candidate);
             }
         }
 
         if (Storage::disk('public')->exists($value)) {
-            return Storage::disk('public')->url($value);
+            return asset('storage/' . $value);
         }
 
         if (file_exists(public_path($value))) {
