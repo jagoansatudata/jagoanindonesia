@@ -48,7 +48,12 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($experience->avatar_url)
-                                    <img src="{{ $experience->avatar_url }}" alt="{{ $experience->intern_name }}" class="h-10 w-10 object-cover rounded-full">
+                                    <div class="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                                        <img src="{{ $experience->avatar_url }}" alt="{{ $experience->intern_name }}" class="h-10 w-10 object-cover" onerror="this.style.display='none'; const fb=this.parentElement.querySelector('[data-img-fallback]'); if(fb){ fb.style.display='block'; }" />
+                                        <svg data-img-fallback style="display:none" class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                    </div>
                                 @else
                                     <div class="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
                                         <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

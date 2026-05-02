@@ -74,7 +74,12 @@
                 <label for="avatar_path" class="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
                 @if($internExperience->avatar_path)
                     <div class="mb-3 flex items-center gap-4">
-                        <img src="{{ $internExperience->avatar_url }}" alt="{{ $internExperience->intern_name }}" class="h-20 w-20 object-cover rounded-full border border-gray-200">
+                        <div class="inline-flex items-center justify-center h-20 w-20 rounded-full border border-gray-200 bg-gray-100 overflow-hidden">
+                            <img src="{{ $internExperience->avatar_url }}" alt="{{ $internExperience->intern_name }}" class="h-20 w-20 object-cover" onerror="this.style.display='none'; const fb=this.parentElement.querySelector('[data-img-fallback]'); if(fb){ fb.style.display='block'; }" />
+                            <svg data-img-fallback style="display:none" class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
                         <div class="text-sm text-gray-500">
                             <p>Current avatar</p>
                             <p class="text-xs">Upload new avatar to replace</p>
