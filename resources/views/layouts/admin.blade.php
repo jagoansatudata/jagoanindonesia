@@ -151,6 +151,13 @@
                     <div class="text-xs text-gray-500 truncate">{{ auth()->user()->email ?? '' }}</div>
                 </div>
             </div>
+
+            <form method="POST" action="{{ route('logout') }}" class="mt-3">
+                @csrf
+                <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+                    <span>Logout</span>
+                </button>
+            </form>
         </div>
     </aside>
 
