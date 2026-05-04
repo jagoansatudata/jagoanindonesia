@@ -1,7 +1,7 @@
 @php
     $heroSections = $heroSections ?? collect([]);
 @endphp
-<section class="hero hero--home" id="heroSlider"
+<section class="hero hero--home{{ $heroSections->count() <= 1 ? ' hero--single' : '' }}" id="heroSlider"
     @if($heroSections->isNotEmpty())
         style="--hero-bg-image: url('{{ ($heroSections->first()->background_image_url ?: asset('images/hero-background.png')) }}');"
     @else
@@ -10,7 +10,30 @@
 >
     <div id="beranda"></div>
     @if($heroSections && $heroSections->isNotEmpty())
-        @if($heroSections->count() > 1)
+        @if($heroSections->count() === 1)
+            @php
+                $heroSection = $heroSections->first();
+            @endphp
+            <div class="container hero-inner">
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <h1 class="hero-title">
+                            {!! $heroSection->title !!}
+                        </h1>
+                        <p class="hero-lead">
+                            {{ $heroSection->subtitle }}
+                        </p>
+                        <a href="{{ $heroSection->button_url }}" class="btn btn-hero-light">
+                            {{ $heroSection->button_text }}
+                            <img src="{{ asset('images/icon-arrow-black.svg') }}" alt="Arrow" class="btn-arrow-icon">
+                        </a>
+                    </div>
+                    <div class="hero-image">
+                        <!-- Image or content for the right side can go here -->
+                    </div>
+                </div>
+            </div>
+        @elseif($heroSections->count() > 1)
             <!-- Slider Indicators -->
             <div class="hero-slider-indicators">
                 @foreach($heroSections as $index => $heroSection)
@@ -26,33 +49,35 @@
             </div>
         @endif
 
-        <!-- Slider Track -->
-        <div class="hero-slider-track" id="heroSliderTrack">
-            @foreach($heroSections as $heroSection)
-                <div class="hero-slide"
-                     data-hero-bg="{{ $heroSection->background_image_url ?: asset('images/hero-background.png') }}">
-                    <div class="container hero-inner">
-                        <div class="hero-grid">
-                            <div class="hero-copy">
-                                <h1 class="hero-title">
-                                    {!! $heroSection->title !!}
-                                </h1>
-                                <p class="hero-lead">
-                                    {{ $heroSection->subtitle }}
-                                </p>
-                                <a href="{{ $heroSection->button_url }}" class="btn btn-hero-light">
-                                    {{ $heroSection->button_text }}
-                                    <img src="{{ asset('images/icon-arrow-black.svg') }}" alt="Arrow" class="btn-arrow-icon">
-                                </a>
-                            </div>
-                            <div class="hero-image">
-                                <!-- Image or content for the right side can go here -->
+        @if($heroSections->count() > 1)
+            <!-- Slider Track -->
+            <div class="hero-slider-track" id="heroSliderTrack">
+                @foreach($heroSections as $heroSection)
+                    <div class="hero-slide{{ $loop->first ? ' is-active' : '' }}"
+                         data-hero-bg="{{ $heroSection->background_image_url ?: asset('images/hero-background.png') }}">
+                        <div class="container hero-inner">
+                            <div class="hero-grid">
+                                <div class="hero-copy">
+                                    <h1 class="hero-title">
+                                        {!! $heroSection->title !!}
+                                    </h1>
+                                    <p class="hero-lead">
+                                        {{ $heroSection->subtitle }}
+                                    </p>
+                                    <a href="{{ $heroSection->button_url }}" class="btn btn-hero-light">
+                                        {{ $heroSection->button_text }}
+                                        <img src="{{ asset('images/icon-arrow-black.svg') }}" alt="Arrow" class="btn-arrow-icon">
+                                    </a>
+                                </div>
+                                <div class="hero-image">
+                                    <!-- Image or content for the right side can go here -->
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
+        @endif
     @else
         <!-- Fallback hero section if no hero sections exist -->
         <div class="hero-slide" data-hero-bg="{{ asset('images/hero-background.png') }}">
@@ -82,6 +107,17 @@
 <style>
 .hero {
     overflow: hidden;
+}
+
+.hero--single .hero-slider-track {
+    transform: none !important;
+    transition: none !important;
+}
+
+.hero--single .hero-slide {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
 }
 
 .hero-slider-nav {
@@ -222,6 +258,7 @@
 }
 </style>
 
+@if(($heroSections ?? collect([]))->count() > 1)
 <script>
 let currentSlide = 0;
 let slideInterval;
@@ -354,3 +391,4 @@ window.__heroSlider = {
     get currentSlide() { return currentSlide; },
 };
 </script>
+@endif
