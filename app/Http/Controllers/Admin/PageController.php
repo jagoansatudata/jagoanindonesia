@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class PageController extends Controller
@@ -19,7 +20,14 @@ class PageController extends Controller
     public function create()
     {
         $users = User::orderBy('name')->get();
-        return view('admin.pages.create', compact('users'));
+        $routeNames = collect(Route::getRoutes())
+            ->map(fn($route) => $route->getName())
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+
+        return view('admin.pages.create', compact('users', 'routeNames'));
     }
 
     public function store(Request $request)
@@ -53,7 +61,14 @@ class PageController extends Controller
     {
         $page->load('users');
         $users = User::orderBy('name')->get();
-        return view('admin.pages.edit', compact('page', 'users'));
+        $routeNames = collect(Route::getRoutes())
+            ->map(fn($route) => $route->getName())
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+
+        return view('admin.pages.edit', compact('page', 'users', 'routeNames'));
     }
 
     public function update(Request $request, Page $page)

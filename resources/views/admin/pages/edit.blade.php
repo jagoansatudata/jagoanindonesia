@@ -42,15 +42,20 @@
 
                 <div>
                     <label for="route_name" class="block text-sm font-semibold text-gray-900 mb-2">Route Name</label>
-                    <input 
-                        type="text" 
+                    <select 
                         id="route_name" 
                         name="route_name" 
-                        value="{{ old('route_name', $page->route_name) }}" 
-                        class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300" 
-                        placeholder="admin.dashboard"
+                        class="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300" 
                         required
                     >
+                        @php($selectedRouteName = old('route_name', $page->route_name))
+                        <option value="" disabled {{ $selectedRouteName ? '' : 'selected' }}>Select a route name</option>
+                        @foreach ($routeNames as $routeName)
+                            <option value="{{ $routeName }}" {{ $selectedRouteName === $routeName ? 'selected' : '' }}>
+                                {{ $routeName }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
