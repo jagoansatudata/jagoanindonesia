@@ -43,11 +43,6 @@
                         {{ $slot }}
                     </div>
                 </div>
-
-                <!-- Footer -->
-                <div class="text-center mt-8 text-gray-600 text-sm">
-                    <p>&copy; {{ date('Y') }} Jagoan Indonesia. All rights reserved.</p>
-                </div>
             </div>
         </div>
 

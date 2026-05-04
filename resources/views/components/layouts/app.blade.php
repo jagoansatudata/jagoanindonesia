@@ -12,11 +12,6 @@
         <div id="top"></div>
         <div class="page-bg">
             {{ $slot }}
-            <footer class="main-footer">
-                <div class="container">
-                    <p>&copy; 2026 Jagoan Indonesia. All Rights Reserved.</p>
-                </div>
-            </footer>
         </div>
     </body>
 </html>

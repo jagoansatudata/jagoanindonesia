@@ -64,8 +64,7 @@
             </div>
 
             <!-- Remember Me & Forgot Password -->
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
+            <div class="flex items-center">
                     <input 
                         id="remember_me" 
                         type="checkbox" 
@@ -75,13 +74,6 @@
                     <label for="remember_me" class="ml-2 text-sm text-gray-600">
                         Remember me
                     </label>
-                </div>
-
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                        Forgot password?
-                    </a>
-                @endif
             </div>
 
             <!-- Submit Button -->
@@ -89,6 +81,8 @@
                 Sign in
             </button>
         </form>
+
+        @if (false)
 
         <!-- Social Login Divider -->
         <div class="relative my-6">
@@ -149,4 +143,6 @@
             document.getElementById('password').value = 'demo123';
         }
     </script>
+
+    @endif
 </x-guest-layout>
