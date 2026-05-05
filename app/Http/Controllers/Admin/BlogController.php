@@ -76,8 +76,43 @@ class BlogController extends Controller
                 $processedContent = str_replace($oldImageTag, $newImageTag, $processedContent);
             }
         }
-        
+
+        $processedContent = $this->normalizeRelativeImageSrc($processedContent);
+
         return $processedContent;
+    }
+
+    private function normalizeRelativeImageSrc($content)
+    {
+        if (!$content) {
+            return $content;
+        }
+
+        return preg_replace_callback(
+            '/(<img\b[^>]*\bsrc=)(["\'])([^"\']+)(\2)/i',
+            function ($m) {
+                $prefix = $m[1];
+                $quote = $m[2];
+                $src = $m[3];
+                $suffix = $m[4];
+
+                if (preg_match('/^(https?:\/\/|\/|data:)/i', $src)) {
+                    return $m[0];
+                }
+
+                $filename = basename($src);
+                $path = 'images/blog/content/' . $filename;
+
+                if (!Storage::disk('public')->exists($path)) {
+                    return $m[0];
+                }
+
+                $url = asset('storage/' . $path);
+
+                return $prefix . $quote . $url . $suffix;
+            },
+            $content
+        );
     }
 
     private function normalizePublicDiskPath(?string $value): ?string
