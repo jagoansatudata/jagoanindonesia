@@ -9,7 +9,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
-class NewsController extends Controller
+class BlogController extends Controller
 {
     /**
      * Display all blog posts.
@@ -17,22 +17,21 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $category = $request->get('category', 'View All');
-        
-        $query = Blog::published()->news();
+
+        $query = Blog::published()->blogs();
 
         if ($category !== 'View All') {
             $query->byCategory($category);
         }
-        
+
         $blogs = $query->latest('published_at')->paginate(9);
-        
-        // Transform blog data to match the expected format for the view
+
         $news = $blogs->map(function ($blog) {
             return [
                 'id' => $blog->id,
                 'title' => $blog->title,
                 'author' => $blog->author,
-                'comments' => $blog->comments_count, // Uses accessor that returns approved comments count
+                'comments' => $blog->comments_count,
                 'date' => $blog->formatted_date,
                 'image' => $blog->image_url ?: asset('images/hero/hero-1.jpg'),
                 'category' => $blog->category,
@@ -41,27 +40,25 @@ class NewsController extends Controller
             ];
         });
 
-        // Get all active categories for filtering
         $dbCategories = BlogCategory::active()->ordered()->get();
         $categories = collect(['View All'])->merge($dbCategories->pluck('name'));
 
-        $pageTitle = 'News';
-        $showRouteName = 'news.show';
+        $pageTitle = 'Blog';
+        $showRouteName = 'blog.show';
 
         return view('pages.news', compact('news', 'categories', 'blogs', 'pageTitle', 'showRouteName'));
     }
-    
+
     /**
      * Display a single blog post.
      */
     public function show($slug)
     {
         $news = Blog::published()
-            ->news()
+            ->blogs()
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Track the view
         BlogView::trackView($news->id, request());
 
         $comments = collect();
@@ -77,34 +74,31 @@ class NewsController extends Controller
                 ->latest()
                 ->get();
         }
-        
-        // Get related posts from the same category
+
         $relatedPosts = Blog::published()
-            ->news()
+            ->blogs()
             ->where('category', $news->category)
             ->where('id', '!=', $news->id)
             ->latest('published_at')
             ->take(3)
             ->get();
-            
-        // Get categories with post counts for sidebar
-        $categories = BlogCategory::withCount(['blogs' => function($query) {
+
+        $categories = BlogCategory::withCount(['blogs' => function ($query) {
             $query->published();
         }])->active()->ordered()->get();
-            
-        // Get top posts for sidebar
+
         $topPosts = Blog::published()
-            ->news()
+            ->blogs()
             ->featured()
             ->latest('published_at')
             ->take(5)
             ->get();
-            
-        $pageTitle = 'News';
-        $breadcrumb = 'Beranda / News';
-        $indexRouteName = 'news';
-        $showRouteName = 'news.show';
-        $commentStoreRouteName = 'news.comments.store';
+
+        $pageTitle = 'Blog';
+        $breadcrumb = 'Beranda / Blog';
+        $indexRouteName = 'blog';
+        $showRouteName = 'blog.show';
+        $commentStoreRouteName = 'blog.comments.store';
 
         return view('pages.news-detail', compact(
             'news',
@@ -123,10 +117,10 @@ class NewsController extends Controller
     public function storeComment(Request $request, $slug)
     {
         if (!Schema::hasTable('comments')) {
-            return redirect()->route('news.show', $slug)->with('success', 'Comments feature is not available yet. Please run migrations.');
+            return redirect()->route('blog.show', $slug)->with('success', 'Comments feature is not available yet. Please run migrations.');
         }
 
-        $news = Blog::published()->news()->where('slug', $slug)->firstOrFail();
+        $news = Blog::published()->blogs()->where('slug', $slug)->firstOrFail();
 
         $validated = $request->validate([
             'body' => 'required|string|min:3|max:2000',
@@ -153,6 +147,6 @@ class NewsController extends Controller
             'is_approved' => false,
         ]);
 
-        return redirect()->route('news.show', $news->slug)->with('success', 'Comment submitted and awaiting approval.');
+        return redirect()->route('blog.show', $news->slug)->with('success', 'Comment submitted and awaiting approval.');
     }
 }

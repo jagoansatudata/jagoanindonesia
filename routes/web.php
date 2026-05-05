@@ -120,6 +120,10 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::post('/news/{slug}/comments', [NewsController::class, 'storeComment'])->name('news.comments.store');
 
+Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog');
+Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{slug}/comments', [\App\Http\Controllers\BlogController::class, 'storeComment'])->name('blog.comments.store');
+
 Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
 
 // CKEditor Image Upload Route

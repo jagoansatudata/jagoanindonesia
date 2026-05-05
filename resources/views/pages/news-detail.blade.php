@@ -6,14 +6,20 @@
 @php
     $shareDescription = $news->excerpt ?: Str::limit(strip_tags($news->content ?? ''), 160);
     $shareImage = $news->image_url ?: asset('images/hero/hero-1.jpg');
+
+    $pageTitle = $pageTitle ?? 'News';
+    $breadcrumb = $breadcrumb ?? ('Beranda / ' . $pageTitle);
+    $indexRouteName = $indexRouteName ?? 'news';
+    $showRouteName = $showRouteName ?? 'news.show';
+    $commentStoreRouteName = $commentStoreRouteName ?? 'news.comments.store';
 @endphp
 <x-layouts.app :title="$news->title . ' - Jagoan Indonesia'" :description="$shareDescription" :image="$shareImage" :url="url()->current()" type="article">
     <x-navbar />
 
     <div class="bg-gray-100 pt-40 pb-12">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-left">Blog</h1>
-            <p class="text-gray-600 text-right">Beranda / Blog</p>
+            <h1 class="text-2xl font-bold text-left">{{ $pageTitle }}</h1>
+            <p class="text-gray-600 text-right">{{ $breadcrumb }}</p>
         </div>
     </div>
     
@@ -91,7 +97,7 @@
                         </button>
                         
                         <!-- WhatsApp -->
-                        <a href="https://wa.me/?text={{ urlencode($news->title . ' - ' . route('news.show', $news->slug)) }}" target="_blank" class="share-btn share-btn--whatsapp" title="Share on WhatsApp">
+                        <a href="https://wa.me/?text={{ urlencode($news->title . ' - ' . route($showRouteName, $news->slug)) }}" target="_blank" class="share-btn share-btn--whatsapp" title="Share on WhatsApp">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17.472 14.382C17.136 14.202 15.634 13.466 15.326 13.342C15.018 13.218 14.792 13.156 14.566 13.492C14.34 13.828 13.746 14.522 13.548 14.748C13.35 14.974 13.152 15.008 12.816 14.828C12.48 14.648 11.518 14.342 10.384 13.324C9.504 12.53 8.938 11.55 8.74 11.214C8.542 10.878 8.712 10.68 8.892 10.5C9.058 10.334 9.25 10.08 9.43 9.882C9.61 9.684 9.672 9.514 9.796 9.288C9.92 9.062 9.858 8.864 9.762 8.684C9.666 8.504 9.072 7.002 8.792 6.33C8.512 5.658 8.232 5.734 8.006 5.734C7.78 5.734 7.554 5.734 7.328 5.734C7.102 5.734 6.738 5.816 6.43 6.152C6.122 6.488 5.342 7.224 5.342 8.726C5.342 10.228 6.458 11.688 6.638 11.914C6.818 12.14 9.072 14.682 11.546 15.998C12.342 16.404 13.014 16.64 13.548 16.82C14.344 17.084 15.068 17.042 15.648 16.96C16.298 16.868 17.526 16.204 17.806 15.496C18.086 14.788 18.086 14.178 17.99 14.054C17.894 13.93 17.668 13.848 17.332 13.668L17.472 14.382Z" fill="currentColor"/>
                                 <path d="M12 2C6.48 2 2 6.48 2 12C2 16.84 5.44 20.87 10 21.82V18.66C7.93 17.77 6.5 15.67 6.5 13.23C6.5 10.13 9.13 7.5 12.23 7.5C15.33 7.5 17.96 10.13 17.96 13.23C17.96 15.67 16.53 17.77 14.46 18.66V21.82C19.02 20.87 22.46 16.84 22.46 12C22.46 6.48 17.98 2 12.23 2H12Z" fill="currentColor"/>
@@ -100,7 +106,7 @@
                         </a>
                         
                         <!-- Facebook -->
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('news.show', $news->slug)) }}&title={{ urlencode($news->title) }}" target="_blank" class="share-btn share-btn--facebook" title="Share on Facebook">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route($showRouteName, $news->slug)) }}&title={{ urlencode($news->title) }}" target="_blank" class="share-btn share-btn--facebook" title="Share on Facebook">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -108,7 +114,7 @@
                         </a>
                         
                         <!-- Twitter/X -->
-                        <a href="https://twitter.com/intent/tweet?text={{ urlencode($news->title) }}&url={{ urlencode(route('news.show', $news->slug)) }}" target="_blank" class="share-btn share-btn--twitter" title="Share on X">
+                        <a href="https://twitter.com/intent/tweet?text={{ urlencode($news->title) }}&url={{ urlencode(route($showRouteName, $news->slug)) }}" target="_blank" class="share-btn share-btn--twitter" title="Share on X">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 4L11.5 11.5L4 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M19 4L11.5 11.5L19 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -118,7 +124,7 @@
                         </a>
                         
                         <!-- LinkedIn -->
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(route('news.show', $news->slug)) }}" target="_blank" class="share-btn share-btn--linkedin" title="Share on LinkedIn">
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(route($showRouteName, $news->slug)) }}" target="_blank" class="share-btn share-btn--linkedin" title="Share on LinkedIn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 8C16 6.89543 16.8954 6 18 6C19.1046 6 20 6.89543 20 8C20 9.10457 19.1046 10 18 10C16.8954 10 16 9.10457 16 8Z" fill="currentColor"/>
                                 <path d="M13 17V11H16.5V13.5C16.5 14.3284 17.1716 15 18 15C18.8284 15 19.5 14.3284 19.5 13.5V11H20.5C21.3284 11 22 11.6716 22 12.5V17C22 17.8284 21.3284 18.5 20.5 18.5H19.5V17H13Z" fill="currentColor"/>
@@ -128,7 +134,7 @@
                         </a>
                         
                         <!-- Email -->
-                        <a href="mailto:?subject={{ urlencode($news->title) }}&body={{ urlencode('Check out this article: ' . $news->title . ' - ' . route('news.show', $news->slug)) }}" class="share-btn share-btn--email" title="Share via Email">
+                        <a href="mailto:?subject={{ urlencode($news->title) }}&body={{ urlencode('Check out this article: ' . $news->title . ' - ' . route($showRouteName, $news->slug)) }}" class="share-btn share-btn--email" title="Share via Email">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -144,32 +150,6 @@
                         </svg>
                         Link copied to clipboard!
                     </div>
-                </div>
-                
-                <!-- Navigation -->
-                <div class="flex justify-between items-center mb-12 pb-8 border-b border-gray-200">
-                    @php
-                        $previousPost = Blog::published()
-                            ->where('published_at', '<', $news->published_at)
-                            ->latest('published_at')
-                            ->first();
-                            
-                        $nextPost = Blog::published()
-                            ->where('published_at', '>', $news->published_at)
-                            ->oldest('published_at')
-                            ->first();
-                    @endphp
-                    
-                    @if($previousPost)
-                        <a href="{{ route('news.show', $previousPost->slug) }}" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 font-medium">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Previous Post
-                        </a>
-                    @else
-                        <div></div>
-                    @endif
                 </div>
 
                 <!-- Comments -->
@@ -211,7 +191,7 @@
                                         <!-- Reply Form (hidden by default) -->
                                         <div id="reply-form-{{ $comment->id }}" class="mt-4 hidden">
                                             <div class="bg-gray-50 rounded-lg p-4">
-                                                <form method="POST" action="{{ route('news.comments.store', $news->slug) }}" class="space-y-3">
+                                                <form method="POST" action="{{ route($commentStoreRouteName, $news->slug) }}" class="space-y-3">
                                                     @csrf
                                                     <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                                                     <div>
@@ -282,7 +262,7 @@
                                                     <!-- Reply Form (hidden by default) -->
                                                     <div id="reply-form-{{ $reply->id }}" class="mt-4 hidden">
                                                         <div class="bg-gray-50 rounded-lg p-4">
-                                                            <form method="POST" action="{{ route('news.comments.store', $news->slug) }}" class="space-y-3">
+                                                            <form method="POST" action="{{ route($commentStoreRouteName, $news->slug) }}" class="space-y-3">
                                                                 @csrf
                                                                 <input type="hidden" name="parent_id" value="{{ $reply->id }}">
                                                                 <div>
@@ -337,7 +317,7 @@
                 <div class="border-t border-gray-200 mb-8"></div>
                 <div class="bg-white rounded-lg p-8 mb-20">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Leave a comment</h3>
-                    <form class="space-y-4" method="POST" action="{{ route('news.comments.store', $news->slug) }}">
+                    <form class="space-y-4" method="POST" action="{{ route($commentStoreRouteName, $news->slug) }}">
                         @csrf
                         <div>
                             <textarea 
@@ -423,7 +403,7 @@
                                 <div class="w-16 h-16 bg-cover bg-center rounded-lg flex-shrink-0" style="background-image: url('{{ $topPostImage }}');">
                                 </div>
                                 <div>
-                                    <a href="{{ route('news.show', $post->slug) }}" class="block">
+                                    <a href="{{ route($showRouteName, $post->slug) }}" class="block">
                                         <h4 class="text-sm font-medium text-gray-900 line-clamp-2 mb-1 hover:text-blue-600 transition-colors">
                                             {{ $post->title }}
                                         </h4>

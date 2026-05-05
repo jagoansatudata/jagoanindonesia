@@ -15,6 +15,9 @@
                 $metaImage = 'https://' . substr($metaImage, strlen('http://'));
             }
         @endphp
+        @if($metaUrl)
+            <link rel="canonical" href="{{ $metaUrl }}">
+        @endif
         @if($metaDescription)
             <meta name="description" content="{{ $metaDescription }}">
         @endif

@@ -1,9 +1,9 @@
-<x-layouts.app :title="'News - Jagoan Indonesia'">
+<x-layouts.app :title="(($pageTitle ?? 'News') . ' - Jagoan Indonesia')">
     <x-navbar />
     <section class="section-hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <span class="hero-tag">OUR NEWS</span>
+                <span class="hero-tag">OUR {{ strtoupper($pageTitle ?? 'News') }}</span>
                 <h1 class="hero-heading">Featured insights and articles</h1>
             </div>
         </div>
@@ -60,7 +60,7 @@
                     
                     <!-- Actions -->
                     <div class="flex justify-between items-center">
-                        <a href="{{ route('news.show', $article['slug']) }}" class="flex items-center gap-2 bg-white border-2 border-gray-200 rounded-full text-gray-600 text-sm font-semibold hover:border-gray-300 hover:text-gray-700 transition-all duration-300 px-4 py-2">
+                        <a href="{{ route($showRouteName ?? 'news.show', $article['slug']) }}" class="flex items-center gap-2 bg-white border-2 border-gray-200 rounded-full text-gray-600 text-sm font-semibold hover:border-gray-300 hover:text-gray-700 transition-all duration-300 px-4 py-2">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                                 <path d="M8 12L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
