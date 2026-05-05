@@ -14,12 +14,22 @@ class PageAccessMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $routeName): Response
+    public function handle(Request $request, Closure $next, ?string $routeName = null): Response
     {
         $user = $request->user();
         
         if (!$user) {
             return redirect()->route('login');
+        }
+
+        if ($request->routeIs('admin.pages.*')) {
+            return $next($request);
+        }
+
+        $routeName = $routeName ?: $request->route()?->getName();
+
+        if (!$routeName) {
+            return $next($request);
         }
 
         // Users with full access (superadmin) have access to all pages

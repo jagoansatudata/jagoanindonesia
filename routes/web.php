@@ -148,7 +148,7 @@ Route::post('/admin/upload-image', function (Illuminate\Http\Request $request) {
 
 Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->middleware(['auth', 'verified', 'page.access:admin.dashboard'])->name('dashboard');
 
-Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:admin', 'page.access'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::resource('activities', AdminActivityController::class)
