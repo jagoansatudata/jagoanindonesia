@@ -21,6 +21,8 @@
 </head>
 <body class="bg-gray-50 text-gray-900" style="font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 @php
+    $user = auth()->user();
+
     $pendingCount = cache()->remember('admin.pending_comments_count', now()->addSeconds(30), function () {
         try {
             return \App\Models\Comment::where('is_approved', false)->count();
@@ -50,97 +52,129 @@
         <nav class="flex-1 px-3 py-4 space-y-1">
             <div class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Overview</div>
 
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">D</span>
-                <span>Dashboard</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.dashboard'))
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">D</span>
+                    <span>Dashboard</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.activities.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.activities.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">A</span>
-                <span>Activities</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.activities.index'))
+                <a href="{{ route('admin.activities.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.activities.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">A</span>
+                    <span>Activities</span>
+                </a>
+            @endif
 
-            <a href="{{ route('clients.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('clients.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">C</span>
-                <span>Clients</span>
-            </a>
+            @if($user?->canAccessRouteName('clients.index'))
+                <a href="{{ route('clients.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('clients.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">C</span>
+                    <span>Clients</span>
+                </a>
+            @endif
 
-            <a href="{{ route('universities.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('universities.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">U</span>
-                <span>Universities</span>
-            </a>
+            @if($user?->canAccessRouteName('universities.index'))
+                <a href="{{ route('universities.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('universities.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">U</span>
+                    <span>Universities</span>
+                </a>
+            @endif
 
-            <a href="{{ route('team-members.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('team-members.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">T</span>
-                <span>Team Members</span>
-            </a>
+            @if($user?->canAccessRouteName('team-members.index'))
+                <a href="{{ route('team-members.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('team-members.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">T</span>
+                    <span>Team Members</span>
+                </a>
+            @endif
 
-            <a href="{{ route('client-reviews.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('client-reviews.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">R</span>
-                <span>Client Reviews</span>
-            </a>
+            @if($user?->canAccessRouteName('client-reviews.index'))
+                <a href="{{ route('client-reviews.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('client-reviews.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">R</span>
+                    <span>Client Reviews</span>
+                </a>
+            @endif
 
-            <a href="{{ route('intern-experiences.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('intern-experiences.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">I</span>
-                <span>Intern Experiences</span>
-            </a>
+            @if($user?->canAccessRouteName('intern-experiences.index'))
+                <a href="{{ route('intern-experiences.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('intern-experiences.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">I</span>
+                    <span>Intern Experiences</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.faqs.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.faqs.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">F</span>
-                <span>FAQs</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.faqs.index'))
+                <a href="{{ route('admin.faqs.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.faqs.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">F</span>
+                    <span>FAQs</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.career-stats.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.career-stats.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">S</span>
-                <span>Career Stats</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.career-stats.index'))
+                <a href="{{ route('admin.career-stats.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.career-stats.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">S</span>
+                    <span>Career Stats</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.hero-sections.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.hero-sections.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">H</span>
-                <span>Hero Sections</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.hero-sections.index'))
+                <a href="{{ route('admin.hero-sections.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.hero-sections.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">H</span>
+                    <span>Hero Sections</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.blogs.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.blogs.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">B</span>
-                <span>News & Blogs</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.blogs.index'))
+                <a href="{{ route('admin.blogs.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.blogs.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">B</span>
+                    <span>News & Blogs</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.blog-categories.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.blog-categories.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">C</span>
-                <span>Categories</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.blog-categories.index'))
+                <a href="{{ route('admin.blog-categories.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.blog-categories.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">C</span>
+                    <span>Categories</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.comments.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.comments.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
-                    M
-                    @if($pendingCount > 0)
-                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $pendingCount > 99 ? '99+' : $pendingCount }}</span>
-                    @endif
-                </span>
-                <span>Comments</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.comments.index'))
+                <a href="{{ route('admin.comments.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.comments.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
+                        M
+                        @if($pendingCount > 0)
+                            <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $pendingCount > 99 ? '99+' : $pendingCount }}</span>
+                        @endif
+                    </span>
+                    <span>Comments</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.messages.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
-                    P
-                    @if($unreadCount > 0)
-                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
-                    @endif
-                </span>
-                <span>Messages</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.messages.index'))
+                <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.messages.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
+                        P
+                        @if($unreadCount > 0)
+                            <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                        @endif
+                    </span>
+                    <span>Messages</span>
+                </a>
+            @endif
 
-            <a href="{{ route('admin.analytics.blogs') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.analytics.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">N</span>
-                <span>Analytics</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.analytics.blogs'))
+                <a href="{{ route('admin.analytics.blogs') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.analytics.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">N</span>
+                    <span>Analytics</span>
+                </a>
+            @endif
 
             <div class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Management</div>
 
-            <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">U</span>
-                <span>Users</span>
-            </a>
+            @if($user?->canAccessRouteName('admin.users.index'))
+                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">U</span>
+                    <span>Users</span>
+                </a>
+            @endif
 
             <a href="{{ route('admin.pages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.pages.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700">P</span>

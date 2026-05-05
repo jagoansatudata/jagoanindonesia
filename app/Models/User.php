@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -64,6 +65,29 @@ class User extends Authenticatable
         }
 
         return $this->pages()->where('route_name', $routeName)->active()->exists();
+    }
+
+    public function canAccessRouteName(string $routeName): bool
+    {
+        if ($this->hasFullAccess()) {
+            return true;
+        }
+
+        $page = Cache::remember(
+            'page_access.page_by_route.' . $routeName,
+            now()->addMinutes(5),
+            fn () => Page::where('route_name', $routeName)->active()->first()
+        );
+
+        if (!$page) {
+            return true;
+        }
+
+        return Cache::remember(
+            'page_access.has_access.page_' . $page->id . '.user_' . $this->id,
+            now()->addMinutes(2),
+            fn () => $page->users()->where('user_id', $this->id)->exists()
+        );
     }
 
     public function getRole(): UserRole
