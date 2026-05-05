@@ -141,6 +141,7 @@
                         @error('image')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                        <p id="image-client-error" class="mt-1 text-sm text-red-600" style="display:none"></p>
                         <p class="mt-1 text-xs text-gray-500">Optional. Max size: 2MB. Allowed formats: JPEG, PNG, JPG, GIF</p>
                         @if($blog->image)
                             <div class="mt-2">
@@ -196,6 +197,44 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let editor;
+    const imageInput = document.querySelector('#image');
+    const imageClientError = document.querySelector('#image-client-error');
+
+    function validateFeaturedImage() {
+        if (!imageInput) {
+            return true;
+        }
+
+        if (imageClientError) {
+            imageClientError.style.display = 'none';
+            imageClientError.textContent = '';
+        }
+
+        imageInput.setCustomValidity('');
+
+        if (!imageInput.files || !imageInput.files.length) {
+            return true;
+        }
+
+        const file = imageInput.files[0];
+        const maxBytes = 2 * 1024 * 1024;
+
+        if (file && file.size > maxBytes) {
+            const message = 'The featured image may not be greater than 2MB.';
+            if (imageClientError) {
+                imageClientError.textContent = message;
+                imageClientError.style.display = 'block';
+            }
+            imageInput.setCustomValidity(message);
+            return false;
+        }
+
+        return true;
+    }
+
+    if (imageInput) {
+        imageInput.addEventListener('change', validateFeaturedImage);
+    }
 
     function UploadAdapter(loader) {
         this.loader = loader;
@@ -278,6 +317,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update the hidden textarea when form is submitted
             const form = document.querySelector('form');
             form.addEventListener('submit', function(e) {
+                if (!validateFeaturedImage()) {
+                    e.preventDefault();
+                    imageInput.reportValidity();
+                    return;
+                }
                 // Update textarea with CKEditor content
                 document.querySelector('#content').value = editor.getData();
             });

@@ -126,6 +126,7 @@
                         @error('image')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                        <p id="image-client-error" class="mt-1 text-sm text-red-600" style="display:none"></p>
                         <p class="mt-1 text-xs text-gray-500">Optional: Max size 2MB</p>
                     </div>
 
@@ -166,6 +167,44 @@
 <script>
 window.addEventListener('load', function () {
     var editorElement = document.querySelector('#content');
+    var imageInput = document.querySelector('#image');
+    var imageClientError = document.querySelector('#image-client-error');
+
+    function validateFeaturedImage() {
+        if (!imageInput) {
+            return true;
+        }
+
+        if (imageClientError) {
+            imageClientError.style.display = 'none';
+            imageClientError.textContent = '';
+        }
+
+        imageInput.setCustomValidity('');
+
+        if (!imageInput.files || !imageInput.files.length) {
+            return true;
+        }
+
+        var file = imageInput.files[0];
+        var maxBytes = 2 * 1024 * 1024;
+
+        if (file && file.size > maxBytes) {
+            var message = 'The featured image may not be greater than 2MB.';
+            if (imageClientError) {
+                imageClientError.textContent = message;
+                imageClientError.style.display = 'block';
+            }
+            imageInput.setCustomValidity(message);
+            return false;
+        }
+
+        return true;
+    }
+
+    if (imageInput) {
+        imageInput.addEventListener('change', validateFeaturedImage);
+    }
     if (!editorElement) {
         return;
     }
@@ -238,7 +277,12 @@ window.addEventListener('load', function () {
                     return;
                 }
 
-                form.addEventListener('submit', function () {
+                form.addEventListener('submit', function (e) {
+                    if (!validateFeaturedImage()) {
+                        e.preventDefault();
+                        imageInput.reportValidity();
+                        return;
+                    }
                     editorElement.value = editor.getData();
                 });
             })
