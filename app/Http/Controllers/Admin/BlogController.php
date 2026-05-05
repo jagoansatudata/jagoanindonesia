@@ -69,7 +69,7 @@ class BlogController extends Controller
             $oldImageTag = $matches[0][$index];
             $newImageTag = preg_replace(
                 '/src="data:image\/[^;]+;base64,[^"]+"/i',
-                'src="' . e(asset('storage/' . $path)) . '"',
+                'src="' . e(url('/storage/' . $path)) . '"',
                 $oldImageTag
             );
             if ($newImageTag) {
@@ -107,7 +107,7 @@ class BlogController extends Controller
                     return $m[0];
                 }
 
-                $url = asset('storage/' . $path);
+                $url = url('/storage/' . $path);
 
                 return $prefix . $quote . $url . $suffix;
             },

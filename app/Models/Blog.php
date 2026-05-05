@@ -137,7 +137,7 @@ class Blog extends Model
                     return $m[0];
                 }
 
-                $url = asset('storage/' . $path);
+                $url = url('/storage/' . $path);
 
                 return $prefix . $quote . $url . $suffix;
             },
