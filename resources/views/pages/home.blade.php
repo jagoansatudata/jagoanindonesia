@@ -547,7 +547,7 @@
                                 onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.15)'; this.style.transform='translateY(-4px)';"
                                 onmouseout="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';"
                                 onclick="window.location.href='{{ route('news.show', $news->slug) }}'">
-                                <div data-bg="{{ $news->image_url ?: asset('images/news1.png') }}" style="width: 100%; height: 200px; background-position: center; background-size: cover; border-radius: 12px 12px 0 0;"></div>
+                                <div style="width: 100%; height: 200px; background: url('{{ $news->image_url ?: asset('images/news1.png') }}') center/cover; border-radius: 12px 12px 0 0;"></div>
                                 <div style="padding: 20px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                         <span style="color: #6B7280; font-size: 12px; display: flex; align-items: center; gap: 6px;">
@@ -613,7 +613,7 @@
                                 onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.15)'; this.style.transform='translateY(-4px)';"
                                 onmouseout="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';"
                                 onclick="window.location.href='{{ route('news.show', $blog->slug) }}'">
-                                <div data-bg="{{ $blog->image_url ?: asset('images/news1.png') }}" style="width: 100%; height: 200px; background-position: center; background-size: cover; border-radius: 12px 12px 0 0;"></div>
+                                <div style="width: 100%; height: 200px; background: url('{{ $blog->image_url ?: asset('images/news1.png') }}') center/cover; border-radius: 12px 12px 0 0;"></div>
                                 <div style="padding: 20px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                         <span style="color: #6B7280; font-size: 12px; display: flex; align-items: center; gap: 6px;">
