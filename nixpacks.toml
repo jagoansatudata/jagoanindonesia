@@ -5,7 +5,7 @@ PHP_VERSION = "8.2"
 NODE_VERSION = "20"
 
 [phases.setup]
-nixPkgs = ["nodejs_20"]  # ❗ hapus composer
+nixPkgs = ["nodejs_20", "php82", "php82Packages.composer2"]
 
 [phases.install]
 cmds = [
