@@ -10,6 +10,10 @@
             $metaImage = $image ?? '';
             $metaUrl = $url ?? url()->current();
             $metaType = $type ?? 'website';
+
+            if ($metaImage && str_starts_with($metaImage, 'http://') && request()->isSecure()) {
+                $metaImage = 'https://' . substr($metaImage, strlen('http://'));
+            }
         @endphp
         @if($metaDescription)
             <meta name="description" content="{{ $metaDescription }}">
@@ -17,11 +21,14 @@
         <meta property="og:title" content="{{ $metaTitle }}">
         <meta property="og:type" content="{{ $metaType }}">
         <meta property="og:url" content="{{ $metaUrl }}">
+        <meta property="og:site_name" content="{{ config('app.name', 'Jagoan Indonesia') }}">
         @if($metaDescription)
             <meta property="og:description" content="{{ $metaDescription }}">
         @endif
         @if($metaImage)
             <meta property="og:image" content="{{ $metaImage }}">
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
         @endif
         <meta name="twitter:card" content="{{ $metaImage ? 'summary_large_image' : 'summary' }}">
         <meta name="twitter:title" content="{{ $metaTitle }}">
