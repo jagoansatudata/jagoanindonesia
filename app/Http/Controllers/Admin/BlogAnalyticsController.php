@@ -12,13 +12,37 @@ use Carbon\Carbon;
 
 class BlogAnalyticsController extends Controller
 {
+    private function normalizePeriod(Request $request): int
+    {
+        $allowedPeriods = [7, 30, 90, 365];
+        $period = (int) $request->get('period', 30);
+
+        if (!in_array($period, $allowedPeriods, true)) {
+            $period = 30;
+        }
+
+        return $period;
+    }
+
+    private function normalizeType(Request $request): string
+    {
+        $allowedTypes = ['all', 'blog', 'news'];
+        $type = (string) $request->get('type', 'all');
+
+        if (!in_array($type, $allowedTypes, true)) {
+            $type = 'all';
+        }
+
+        return $type;
+    }
+
     /**
      * Display the analytics dashboard.
      */
     public function index(Request $request)
     {
-        $period = $request->get('period', '30'); // Default to 30 days
-        $type = $request->get('type', 'all'); // all, blog, news
+        $period = $this->normalizePeriod($request);
+        $type = $this->normalizeType($request);
         
         $startDate = Carbon::now()->subDays($period);
         $endDate = Carbon::now();
@@ -182,9 +206,14 @@ class BlogAnalyticsController extends Controller
      */
     public function getChartData(Request $request)
     {
-        $period = $request->get('period', '30');
-        $type = $request->get('type', 'all');
-        $chartType = $request->get('chart_type', 'daily');
+        $period = $this->normalizePeriod($request);
+        $type = $this->normalizeType($request);
+
+        $allowedChartTypes = ['daily', 'monthly'];
+        $chartType = (string) $request->get('chart_type', 'daily');
+        if (!in_array($chartType, $allowedChartTypes, true)) {
+            $chartType = 'daily';
+        }
         
         $startDate = Carbon::now()->subDays($period);
         
@@ -226,7 +255,7 @@ class BlogAnalyticsController extends Controller
      */
     public function export(Request $request)
     {
-        $type = $request->get('type', 'all');
+        $type = $this->normalizeType($request);
         
         $data = Blog::when($type !== 'all', function ($query) use ($type) {
             return $query->where('type', $type);

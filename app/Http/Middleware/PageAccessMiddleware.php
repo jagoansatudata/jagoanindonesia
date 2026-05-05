@@ -29,6 +29,8 @@ class PageAccessMiddleware
 
         $routeName = $routeName ?: $request->route()?->getName();
 
+        $isAdminRoute = $routeName && str_starts_with($routeName, 'admin.');
+
         if (!$routeName) {
             return $next($request);
         }
@@ -47,6 +49,9 @@ class PageAccessMiddleware
 
         // If page is not configured, allow access (default allow)
         if (!$page) {
+            if ($isAdminRoute) {
+                abort(403, 'This page is not configured for access control.');
+            }
             return $next($request);
         }
 

@@ -37,7 +37,7 @@ class HeroSectionController extends Controller
             'subtitle' => 'required|string',
             'button_text' => 'required|string|max:255',
             'button_url' => 'required|string|max:255',
-            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_active' => 'boolean',
         ]);
 
@@ -90,7 +90,7 @@ class HeroSectionController extends Controller
             'subtitle' => 'required|string',
             'button_text' => 'required|string|max:255',
             'button_url' => 'required|string|max:255',
-            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'is_active' => 'boolean',
         ]);
 

@@ -34,7 +34,7 @@ class UniversityController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'website_url' => 'nullable|url',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
@@ -82,7 +82,7 @@ class UniversityController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'website_url' => 'nullable|url',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
