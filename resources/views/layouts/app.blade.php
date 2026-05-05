@@ -13,7 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Favicon -->
-        <link rel="icon" type="image/svg+xml" href="{{ asset('build/assets/Favicon JI.svg') }}">
+        <link rel="icon" type="image/svg+xml" href="{{ asset('images/fav.svg') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
