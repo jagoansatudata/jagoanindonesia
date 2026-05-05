@@ -1,8 +1,11 @@
-providers = ["php", "node"]
+providers = ["php"]
 
 [variables]
 PHP_VERSION = "8.2"
 NODE_VERSION = "20"
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = [
