@@ -111,6 +111,40 @@ class Blog extends Model
         return null;
     }
 
+    public function getRenderedContentAttribute(): string
+    {
+        $content = (string) ($this->content ?? '');
+        if ($content === '') {
+            return '';
+        }
+
+        return preg_replace_callback(
+            '/(<img\b[^>]*\bsrc=)(["\'])([^"\']+)(\2)/i',
+            function ($m) {
+                $prefix = $m[1];
+                $quote = $m[2];
+                $src = $m[3];
+                $suffix = $m[4];
+
+                if (preg_match('/^(https?:\/\/|\/|data:)/i', $src)) {
+                    return $m[0];
+                }
+
+                $filename = basename($src);
+                $path = 'images/blog/content/' . $filename;
+
+                if (!Storage::disk('public')->exists($path)) {
+                    return $m[0];
+                }
+
+                $url = asset('storage/' . $path);
+
+                return $prefix . $quote . $url . $suffix;
+            },
+            $content
+        );
+    }
+
     public function category()
     {
         return $this->belongsTo(BlogCategory::class, 'category_id');

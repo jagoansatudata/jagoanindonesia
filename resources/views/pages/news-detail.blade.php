@@ -59,7 +59,7 @@
                 
                 <!-- Article Content -->
                 <div class="prose prose-lg max-w-none mb-8">
-                    {!! $news->content !!}
+                    {!! $news->rendered_content !!}
                 </div>
                 
                 <!-- Tags -->

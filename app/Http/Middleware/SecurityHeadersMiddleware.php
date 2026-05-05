@@ -25,7 +25,8 @@ class SecurityHeadersMiddleware
             . "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net; "
             . "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net; "
             . "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net; "
-            . "script-src 'self' 'unsafe-inline';";
+            . "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; "
+            . "script-src-elem 'self' 'unsafe-inline' https://static.cloudflareinsights.com;";
 
         $response->headers->set('Content-Security-Policy', $csp);
 
