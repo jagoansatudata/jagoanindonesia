@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class BlogController extends Controller
 {
@@ -26,8 +27,32 @@ class BlogController extends Controller
         }
         
         $processedContent = $content;
+
+        $maxSingleBytes = 2 * 1024 * 1024;
+        $maxTotalBytes = 5 * 1024 * 1024;
+        $totalBytes = 0;
         
         foreach ($matches[1] as $index => $base64Data) {
+            $padding = 0;
+            if (str_ends_with($base64Data, '==')) {
+                $padding = 2;
+            } elseif (str_ends_with($base64Data, '=')) {
+                $padding = 1;
+            }
+            $approxBytes = (int) floor((strlen($base64Data) * 3) / 4) - $padding;
+            if ($approxBytes > $maxSingleBytes) {
+                throw ValidationException::withMessages([
+                    'content' => 'Content contains an embedded image larger than 2MB. Please upload images using the editor upload button.',
+                ]);
+            }
+
+            $totalBytes += max(0, $approxBytes);
+            if ($totalBytes > $maxTotalBytes) {
+                throw ValidationException::withMessages([
+                    'content' => 'Content contains too much embedded image data. Please upload images using the editor upload button.',
+                ]);
+            }
+
             $imageData = base64_decode($base64Data);
             if ($imageData === false) {
                 continue;
