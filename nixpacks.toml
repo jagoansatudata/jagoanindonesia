@@ -5,10 +5,12 @@ PHP_VERSION = "8.2"
 NODE_VERSION = "20"
 
 [phases.setup]
-nixPkgs = ["nodejs_20", "php82", "php82Packages.composer2"]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = [
+  "curl -sS https://getcomposer.org/installer | php",
+  "mv composer.phar /usr/local/bin/composer",
   "composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader",
   "npm ci",
   "npm run build"
