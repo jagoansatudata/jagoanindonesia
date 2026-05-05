@@ -6,6 +6,30 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+const lazyBgElements = document.querySelectorAll('[data-bg]');
+if (lazyBgElements.length) {
+    const setBg = (el) => {
+        const url = el.getAttribute('data-bg');
+        if (!url) return;
+        el.style.backgroundImage = `url('${url}')`;
+        el.removeAttribute('data-bg');
+    };
+
+    if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                setBg(entry.target);
+                observer.unobserve(entry.target);
+            });
+        }, { rootMargin: '200px 0px' });
+
+        lazyBgElements.forEach((el) => io.observe(el));
+    } else {
+        lazyBgElements.forEach(setBg);
+    }
+}
+
 const header = document.getElementById('site-header');
 
 if (header) {

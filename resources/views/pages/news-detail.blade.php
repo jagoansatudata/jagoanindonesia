@@ -32,7 +32,7 @@
                 @php
                     $featuredImage = $news->image_url ?: asset('images/hero/hero-1.jpg');
                 @endphp
-                <div class="w-full h-96 bg-cover bg-center rounded-[16px] mb-8" style="background-image: url('{{ $featuredImage }}');">
+                <div class="w-full h-96 bg-cover bg-center rounded-[16px] mb-8" data-bg="{{ $featuredImage }}" style="background-position: center; background-size: cover;">
                 </div>
                 
                 <!-- Article Title and Meta -->
@@ -400,7 +400,7 @@
                                 $topPostImage = $post->image_url ?: asset('images/hero/hero-1.jpg');
                             @endphp
                             <div class="flex gap-3">
-                                <div class="w-16 h-16 bg-cover bg-center rounded-lg flex-shrink-0" style="background-image: url('{{ $topPostImage }}');">
+                                <div class="w-16 h-16 bg-cover bg-center rounded-lg flex-shrink-0" data-bg="{{ $topPostImage }}" style="background-position: center; background-size: cover;">
                                 </div>
                                 <div>
                                     <a href="{{ route($showRouteName, $post->slug) }}" class="block">
