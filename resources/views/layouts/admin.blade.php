@@ -20,6 +20,23 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 text-gray-900" style="font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+@php
+    $pendingCount = cache()->remember('admin.pending_comments_count', now()->addSeconds(30), function () {
+        try {
+            return \App\Models\Comment::where('is_approved', false)->count();
+        } catch (\Throwable $e) {
+            return 0;
+        }
+    });
+
+    $unreadCount = cache()->remember('admin.unread_messages_count', now()->addSeconds(30), function () {
+        try {
+            return \App\Models\Message::where('is_read', false)->count();
+        } catch (\Throwable $e) {
+            return 0;
+        }
+    });
+@endphp
 <div class="min-h-screen flex">
     <aside class="w-72 hidden lg:flex flex-col border-r border-gray-200 bg-white">
         <div class="h-16 px-6 flex items-center gap-3 border-b border-gray-200">
@@ -96,12 +113,6 @@
             <a href="{{ route('admin.comments.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.comments.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
                     M
-                    @php
-                        $pendingCount = 0;
-                        if (\Illuminate\Support\Facades\Schema::hasTable('comments')) {
-                            $pendingCount = \App\Models\Comment::where('is_approved', false)->count();
-                        }
-                    @endphp
                     @if($pendingCount > 0)
                         <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $pendingCount > 99 ? '99+' : $pendingCount }}</span>
                     @endif
@@ -112,12 +123,6 @@
             <a href="{{ route('admin.messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.messages.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 <span class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-700 relative">
                     P
-                    @php
-                        $unreadCount = 0;
-                        if (\Illuminate\Support\Facades\Schema::hasTable('messages')) {
-                            $unreadCount = \App\Models\Message::where('is_read', false)->count();
-                        }
-                    @endphp
                     @if($unreadCount > 0)
                         <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
                     @endif
@@ -180,14 +185,8 @@
                         <path d="M6 8H18M6 12H18M6 16H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M20 14V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    @php
-                        $unreadCountTop = 0;
-                        if (\Illuminate\Support\Facades\Schema::hasTable('messages')) {
-                            $unreadCountTop = \App\Models\Message::where('is_read', false)->count();
-                        }
-                    @endphp
-                    @if($unreadCountTop > 0)
-                        <span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCountTop > 99 ? '99+' : $unreadCountTop }}</span>
+                    @if($unreadCount > 0)
+                        <span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
                     @endif
                 </a>
 

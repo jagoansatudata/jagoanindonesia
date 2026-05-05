@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Page;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
 class PageAccessMiddleware
@@ -38,7 +39,11 @@ class PageAccessMiddleware
         }
 
         // Check if the page exists and is active
-        $page = Page::where('route_name', $routeName)->active()->first();
+        $page = Cache::remember(
+            'page_access.page_by_route.' . $routeName,
+            now()->addMinutes(5),
+            fn () => Page::where('route_name', $routeName)->active()->first()
+        );
 
         // If page is not configured, allow access (default allow)
         if (!$page) {
@@ -46,7 +51,13 @@ class PageAccessMiddleware
         }
 
         // Check if user has access to this page
-        if (!$page->hasAccess($user)) {
+        $hasAccess = Cache::remember(
+            'page_access.has_access.page_' . $page->id . '.user_' . $user->id,
+            now()->addMinutes(2),
+            fn () => $page->hasAccess($user)
+        );
+
+        if (!$hasAccess) {
             abort(403, 'You do not have permission to access this page.');
         }
 
