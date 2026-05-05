@@ -1,4 +1,10 @@
-<x-layouts.app :title="$blog->title . ' - Jagoan Indonesia'">
+@php
+    use Illuminate\Support\Str;
+
+    $shareDescription = $blog->excerpt ?: Str::limit(strip_tags($blog->content ?? ''), 160);
+    $shareImage = $blog->image_url ?: asset('images/hero/hero-1.jpg');
+@endphp
+<x-layouts.app :title="$blog->title . ' - Jagoan Indonesia'" :description="$shareDescription" :image="$shareImage" :url="url()->current()" type="article">
     <x-navbar />
     
     <!-- Hero Section -->

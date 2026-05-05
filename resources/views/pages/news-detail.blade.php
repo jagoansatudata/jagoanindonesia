@@ -3,7 +3,11 @@
     use Illuminate\Support\Str;
 @endphp
 
-<x-layouts.app :title="$news->title . ' - Jagoan Indonesia'">
+@php
+    $shareDescription = $news->excerpt ?: Str::limit(strip_tags($news->content ?? ''), 160);
+    $shareImage = $news->image_url ?: asset('images/hero/hero-1.jpg');
+@endphp
+<x-layouts.app :title="$news->title . ' - Jagoan Indonesia'" :description="$shareDescription" :image="$shareImage" :url="url()->current()" type="article">
     <x-navbar />
 
     <div class="bg-gray-100 pt-40 pb-12">
