@@ -17,6 +17,14 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $category = $request->get('category', 'View All');
+
+        if ($category === 'news') {
+            return redirect()->route('news');
+        }
+
+        if ($category === 'blog') {
+            return redirect()->route('blog');
+        }
         
         $query = Blog::published()->news();
 

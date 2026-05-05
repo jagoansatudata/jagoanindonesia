@@ -18,6 +18,14 @@ class BlogController extends Controller
     {
         $category = $request->get('category', 'View All');
 
+        if ($category === 'news') {
+            return redirect()->route('news');
+        }
+
+        if ($category === 'blog') {
+            return redirect()->route('blog');
+        }
+
         $query = Blog::published()->blogs();
 
         if ($category !== 'View All') {
