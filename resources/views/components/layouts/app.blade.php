@@ -13,5 +13,8 @@
         <div class="page-bg">
             {{ $slot }}
         </div>
+        <div class="footer-bottom-bar">
+            <div class="footer-bottom-bar-inner">© {{ now()->year }} Jagoan Indonesia. All Rights Reserved.</div>
+        </div>
     </body>
 </html>

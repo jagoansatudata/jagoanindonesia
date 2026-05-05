@@ -171,8 +171,11 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="contact-footer">
+    </div>
+
+    <!-- Footer -->
+    <div class="contact-footer">
+        <div class="container contact-footer-inner">
             <a href="{{ route('home') }}" class="contact-footer-logo" aria-label="Jagoan Indonesia — Beranda">
                 <img src="{{ asset('images/logo-ji.svg') }}" alt="" width="154" height="62" decoding="async">
             </a>
