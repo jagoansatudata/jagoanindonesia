@@ -9,6 +9,33 @@ use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
+    private function normalizePublicDiskPath(?string $value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        $value = ltrim($value, '/');
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return null;
+        }
+
+        if (str_starts_with($value, 'storage/')) {
+            $value = substr($value, strlen('storage/'));
+        }
+
+        if (str_starts_with($value, 'clients/')) {
+            return $value;
+        }
+
+        if (!str_contains($value, '/')) {
+            return 'clients/' . $value;
+        }
+
+        return $value;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +60,7 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'website_url' => 'nullable|url',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
@@ -87,7 +114,7 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'website_url' => 'nullable|url',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
@@ -110,7 +137,10 @@ class ClientController extends Controller
 
             // Delete old logo (only after new upload success)
             if ($client->logo_path) {
-                Storage::disk('public')->delete($client->logo_path);
+                $existing = $this->normalizePublicDiskPath($client->logo_path);
+                if ($existing) {
+                    Storage::disk('public')->delete($existing);
+                }
             }
 
             $client->logo_path = $newLogoPath;
@@ -129,7 +159,10 @@ class ClientController extends Controller
     {
         // Delete logo if exists
         if ($client->logo_path) {
-            Storage::disk('public')->delete($client->logo_path);
+            $existing = $this->normalizePublicDiskPath($client->logo_path);
+            if ($existing) {
+                Storage::disk('public')->delete($existing);
+            }
         }
 
         $client->delete();
