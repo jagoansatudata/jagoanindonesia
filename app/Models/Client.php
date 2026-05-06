@@ -31,11 +31,32 @@ class Client extends Model
             return null;
         }
 
-        if (!Storage::disk('public')->exists($this->logo_path)) {
-            return null;
+        $value = ltrim($this->logo_path, '/');
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
         }
 
-        return asset('storage/' . $this->logo_path);
+        if (str_starts_with($value, 'storage/')) {
+            $value = substr($value, strlen('storage/'));
+        }
+
+        if (!str_contains($value, '/')) {
+            $candidate = 'clients/' . $value;
+            if (Storage::disk('public')->exists($candidate)) {
+                return asset('storage/' . $candidate);
+            }
+        }
+
+        if (Storage::disk('public')->exists($value)) {
+            return asset('storage/' . $value);
+        }
+
+        if (file_exists(public_path($value))) {
+            return asset($value);
+        }
+
+        return null;
     }
 
     public function scopeActive($query)
