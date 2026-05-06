@@ -102,11 +102,6 @@ class BlogController extends Controller
 
                 $filename = basename($src);
                 $path = 'images/blog/content/' . $filename;
-
-                if (!Storage::disk('public')->exists($path)) {
-                    return $m[0];
-                }
-
                 $url = url('/storage/' . $path);
 
                 return $prefix . $quote . $url . $suffix;
