@@ -27,10 +27,13 @@ class Activity extends Model
             return null;
         }
 
-        if (!Storage::disk('public')->exists($this->image_path)) {
+        $disk = Storage::disk('public');
+        $driver = (string) config('filesystems.disks.public.driver');
+
+        if ($driver === 'local' && !$disk->exists($this->image_path)) {
             return null;
         }
 
-        return asset('storage/' . $this->image_path);
+        return $disk->url($this->image_path);
     }
 }
