@@ -41,11 +41,13 @@ class Client extends Model
             $value = substr($value, strlen('storage/'));
         }
 
+        if (str_starts_with($value, 'clients/')) {
+            $filename = basename($value);
+            return url('/storage/clients/' . $filename);
+        }
+
         if (!str_contains($value, '/')) {
-            $candidate = 'clients/' . $value;
-            if (Storage::disk('public')->exists($candidate)) {
-                return asset('storage/' . $candidate);
-            }
+            return url('/storage/clients/' . $value);
         }
 
         if (Storage::disk('public')->exists($value)) {
