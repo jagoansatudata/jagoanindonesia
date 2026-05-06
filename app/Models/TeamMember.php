@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TeamMember extends Model
 {
@@ -27,8 +28,12 @@ class TeamMember extends Model
             return null;
         }
 
+        if (Str::startsWith($this->photo, ['http://', 'https://', '//'])) {
+            return $this->photo;
+        }
+
         if (Storage::disk('public')->exists('team/' . $this->photo)) {
-            return asset('storage/team/' . $this->photo);
+            return Storage::disk('public')->url('team/' . $this->photo);
         }
 
         if (File::exists(public_path('images/team/' . $this->photo))) {
