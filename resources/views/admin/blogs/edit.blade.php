@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-visible">
         <form method="POST" action="{{ route('admin.blogs.update', $blog) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -87,13 +87,11 @@
                 </div>
 
                 <!-- Content -->
-                <div>
-                    <label for="content" class="block text-sm font-semibold text-gray-900 mb-2">Content</label>
-                    <div id="editor-container">
-                        <textarea id="content" name="content" rows="12"
-                                  class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                  placeholder="Full blog post content">{{ old('content', $blog->content) }}</textarea>
-                    </div>
+                <div class="ckeditor-content-field">
+                    <label for="content" class="block text-sm font-semibold text-gray-900 mb-2">Content *</label>
+                    <textarea id="content" name="content" rows="12"
+                              class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              placeholder="Start writing your blog post content here...">{{ old('content', $blog->content) }}</textarea>
                     @error('content')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -283,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
             toolbar: {
                 items: [
                     'heading', '|',
-                    'bold', 'italic', '|',
+                    'bold', 'italic', 'alignment', '|',
                     'link', 'bulletedList', 'numberedList', '|',
                     'outdent', 'indent', '|',
                     'blockQuote', 'insertTable', '|',

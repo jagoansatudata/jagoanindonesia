@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-visible">
         <form method="POST" action="{{ route('admin.blogs.store') }}" enctype="multipart/form-data">
             @csrf
             
@@ -81,7 +81,7 @@
                 </div>
 
                 <!-- Content -->
-                <div>
+                <div class="ckeditor-content-field">
                     <label for="content" class="block text-sm font-semibold text-gray-900 mb-2">Content *</label>
                     <textarea id="content" name="content" rows="12"
                               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -261,12 +261,27 @@ window.addEventListener('load', function () {
                 toolbar: {
                     items: [
                         'heading', '|',
-                        'bold', 'italic', '|',
+                        'bold', 'italic', 'alignment', '|',
                         'link', 'bulletedList', 'numberedList', '|',
                         'outdent', 'indent', '|',
                         'blockQuote', 'insertTable', '|',
                         'imageUpload', '|',
                         'undo', 'redo'
+                    ]
+                },
+                image: {
+                    toolbar: [
+                        'imageTextAlternative',
+                        'imageStyle:full',
+                        'imageStyle:side',
+                        'link'
+                    ]
+                },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells'
                     ]
                 },
                 extraPlugins: [ UploadAdapterPlugin ]
